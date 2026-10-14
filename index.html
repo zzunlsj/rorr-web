@@ -992,6 +992,23 @@ body.authing{overflow:hidden}body.authing .auth{display:flex;animation:fadeIn .2
 .au-switch{margin-top:16px;font-size:14px;color:var(--mute)}.au-switch .au-link{font-size:14px}
 .au-terms{font-size:11.5px;color:var(--mute);margin-top:8px}
 .au-demo{font-size:11px;color:var(--mute);margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}
+/* ===== legal pages ===== */
+.legal .lg-tabs{display:flex;gap:6px;margin:18px 0 26px}
+.legal .lg-tabs a{padding:7px 16px;border-radius:999px;border:1px solid var(--line);color:var(--mute);font:600 13px "Pretendard Variable",sans-serif;text-decoration:none}
+.legal .lg-tabs a.on{background:var(--cta);border-color:var(--cta);color:#fff}
+.legal .lg-lead{color:var(--ink)}
+.legal .lg-toc{border:1px solid var(--line);border-radius:12px;background:var(--bg2);padding:14px 18px;margin:6px 0 30px}
+.legal .lg-toc summary{cursor:pointer;font:700 13px "Pretendard Variable",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--mute)}
+.legal .lg-toc ol{list-style:none;margin:10px 0 0;padding:0;columns:2;column-gap:24px}
+.legal .lg-toc li{font-size:14px;line-height:1.5;margin:0 0 6px;break-inside:avoid}
+.legal .lg-toc a{color:var(--ink);text-decoration:none}.legal .lg-toc a:hover{color:var(--cyan)}
+.legal .lg-sec{scroll-margin-top:90px;border-top:1px solid var(--line);padding-top:4px}
+.legal .lg-sec h2{font-size:22px;margin:26px 0 12px}
+.legal .lg-sec h3{font-size:16px;font-weight:700;margin:18px 0 8px;color:var(--ink)}
+.legal .pbody p,.legal .pbody li{font-size:16px;line-height:1.75}
+.legal .pbody a{color:var(--cyan)}
+@media (max-width:640px){.legal .lg-toc ol{columns:1}}
+.au-terms a{color:var(--cyan);text-decoration:underline}
 /* ===== auth v2: sign up (OTP) + password reset ===== */
 .au-err:empty{display:none}
 .au-in{position:relative;display:block}.au-in input{width:100%}
@@ -1624,6 +1641,9 @@ body:not(.ip-open) .ipanel{box-shadow:none!important}
 <div class="rpage" id="pg-post" data-r="post">
  <article class="post wrap" id="post"></article>
 </div>
+<div class="rpage" id="pg-legal" data-r="legal">
+ <article class="post wrap legal" id="legal"></article>
+</div>
 <div class="rpage" id="pg-contact" data-r="contact">
  <section class="rhero" style="padding-bottom:28px">
   <div class="k">CONTACT</div>
@@ -1660,7 +1680,7 @@ body:not(.ip-open) .ipanel{box-shadow:none!important}
  </div>
 </div>
 <footer><div class="wrap">
-  <div class="links"><a href="#wrc" onclick="nav(event,'wrc')"><span class="m">LwRC+</span> rankings</a><a href="#blog" onclick="nav(event,'blog')">Blog</a><a href="#about" onclick="nav(event,'about')">About us</a><a href="#">Privacy</a><a href="#">Terms</a><a href="#contact" onclick="nav(event,'contact')">Contact</a></div>
+  <div class="links"><a href="#wrc" onclick="nav(event,'wrc')"><span class="m">LwRC+</span> rankings</a><a href="#blog" onclick="nav(event,'blog')">Blog</a><a href="#about" onclick="nav(event,'about')">About us</a><a href="#privacy" onclick="nav(event,'privacy')">Privacy</a><a href="#terms" onclick="nav(event,'terms')">Terms</a><a href="#contact" onclick="nav(event,'contact')">Contact</a></div>
   <p>RORR is developed and operated by Pitch Interactive Inc. It is not operated by, and does not speak for, Riot Games or the LCK.</p>
   <p>League of Legends and LCK are trademarks or registered trademarks of Riot Games, Inc.</p>
   <p>LwRC+ and other RORR metrics are calculated from official LCK match data, down to every kill, objective and gold swing. They are RORR's own analysis, not official LCK statistics. Sponsored content is always clearly labelled and never influences an answer.</p>
@@ -1862,6 +1882,7 @@ function route_(r){const b=document.body;if(typeof MD!=='undefined'){if(r==='mus
  if(r.startsWith('match/')){b.classList.remove('chatting');b.classList.add('pagev');renderMatch(r.slice(6));document.getElementById('pg-match').classList.add('on');hdr.classList.add('solid');scrollTo(0,0);clearInterval(timer);return}
  if(r==='contact'){b.classList.remove('chatting');b.classList.add('pagev');CT.show();document.getElementById('pg-contact').classList.add('on');hdr.classList.add('solid');scrollTo(0,0);clearInterval(timer);return}
  if(r==='about'){b.classList.remove('chatting');b.classList.add('pagev');document.getElementById('pg-about').classList.add('on');hdr.classList.add('solid');scrollTo(0,0);clearInterval(timer);return}
+ if(r==='terms'||r==='privacy'){b.classList.remove('chatting');b.classList.add('pagev');LEGAL.render(r);document.getElementById('pg-legal').classList.add('on');hdr.classList.add('solid');scrollTo(0,0);clearInterval(timer);return}
  if(r==='wge')r='wrc';
  if(r==='wrc'){b.classList.remove('chatting');b.classList.add('pagev');document.getElementById('wf-lg').value=LG;wgRender();document.getElementById('pg-wge').classList.add('on');hdr.classList.add('solid');scrollTo(0,0);clearInterval(timer);return}
  if(r==='blog/what-is-wge')r='blog/what-is-wrc';
@@ -2337,7 +2358,7 @@ const AU=(()=>{const $=id=>document.getElementById(id);
   google:'Continue with Google',apple:'Continue with Apple',microsoft:'Continue with Microsoft',or:'or with email',
   email:'Email',emailPh:'you@example.com',pw:'Password',pwPh:'Enter password',show:'Show',hide:'Hide',
   keep:'Keep me logged in',forgot:'Forgot password?',loginGo:'Log in',noAcc:'New to RORR?',toSignup:'Sign up',
-  terms:'By continuing you agree to the Terms and Privacy Policy.',
+  terms:'By continuing you agree to the {terms} and {privacy}.',termsL:'Terms',privacyL:'Privacy Policy',
   emailInvalid:'Please enter a valid email address.',pwRequired:'Please enter your password.',
   'L.INVALID_CREDENTIALS':'Invalid email or password.','L.EMAIL_NOT_VERIFIED':"Your email isn't verified yet. Please check your inbox.",
   'L.USER_NOT_FOUND':'No account found with this email.','L.RATE_LIMITED':'Too many requests. Please try again shortly.',
@@ -2365,7 +2386,7 @@ const AU=(()=>{const $=id=>document.getElementById(id);
   google:'Google로 계속하기',apple:'Apple로 계속하기',microsoft:'Microsoft로 계속하기',or:'또는 이메일로',
   email:'이메일',emailPh:'you@example.com',pw:'비밀번호',pwPh:'비밀번호 입력',show:'보기',hide:'숨기기',
   keep:'로그인 상태 유지',forgot:'비밀번호를 잊으셨나요?',loginGo:'로그인',noAcc:'RORR가 처음이신가요?',toSignup:'회원가입',
-  terms:'계속하면 이용약관과 개인정보처리방침에 동의하게 됩니다.',
+  terms:'계속하면 {terms} 및 {privacy}에 동의하게 됩니다.',termsL:'이용약관',privacyL:'개인정보처리방침',
   emailInvalid:'이메일 형식을 확인해 주세요.',pwRequired:'비밀번호를 입력해 주세요.',
   'L.INVALID_CREDENTIALS':'이메일 또는 비밀번호가 올바르지 않아요.','L.EMAIL_NOT_VERIFIED':'이메일 인증이 아직 완료되지 않았어요. 받은 메일함을 확인해 주세요.',
   'L.USER_NOT_FOUND':'가입되지 않은 이메일이에요.','L.RATE_LIMITED':'요청이 너무 많아요. 잠시 후 다시 시도해 주세요.',
@@ -2437,7 +2458,7 @@ const AU=(()=>{const $=id=>document.getElementById(id);
     <div class="au-row"><label class="au-chk"><input type="checkbox" data-k="lkeep"${L.keep?' checked':''}> ${t('keep')}</label><button class="au-link" type="button" data-act="toReset">${t('forgot')}</button></div>
     ${err('au-lerr',L.err)}<button class="pill au-go" id="au-lgo" type="submit">${t('loginGo')}</button></form>
    <p class="au-switch">${t('noAcc')} <button type="button" class="au-link" data-act="toSignup">${t('toSignup')}</button></p>
-   <p class="au-terms">${t('terms')}</p></div>`}
+   <p class="au-terms">${t('terms',{terms:`<a href="#terms" target="_blank" rel="noopener">${t('termsL')}</a>`,privacy:`<a href="#privacy" target="_blank" rel="noopener">${t('privacyL')}</a>`})}</p></div>`}
  function tplSignup(){const sent=G.otp!=='idle',ver=G.otp==='verified';
   const codeBtn=ver?`<span class="au-badge ok">✓ ${t('verified')}</span>`:`<button type="button" class="au-inbtn" id="au-send" data-act="sendOtp">${sent?t('resend'):t('sendCode')}</button>`;
   return `<div class="au-view" data-v="signup"><button class="au-link au-back" type="button" data-act="toLogin">${t('back')}</button>
@@ -2451,7 +2472,7 @@ const AU=(()=>{const $=id=>document.getElementById(id);
     ${field('gconf',t('confirm'),G.show2?'text':'password',G.confirm,t('confirmPh'),{pw:1,shown:G.show2,ac:'new-password'})}${err('au-gmis','')}
     ${field('gnick',t('nick'),'text',G.nick,t('nickPh'),{ac:'nickname'})}${err('au-gnickerr','')}
     <div class="au-terms-box"><label class="au-chk all"><input type="checkbox" data-k="tall"> ${t('agreeAll')}</label>
-     ${['service','privacy','marketing'].map(k=>`<div class="au-trow"><label class="au-chk"><input type="checkbox" data-k="t-${k}"${G.terms[k]?' checked':''}> ${t('T.'+k)}</label>${k!=='marketing'?`<a class="au-view-link" href="https://rorr.club/${k==='service'?'terms':'privacy'}" target="_blank" rel="noopener">${t('view')}</a>`:''}</div>`).join('')}</div>
+     ${['service','privacy','marketing'].map(k=>`<div class="au-trow"><label class="au-chk"><input type="checkbox" data-k="t-${k}"${G.terms[k]?' checked':''}> ${t('T.'+k)}</label>${k!=='marketing'?`<a class="au-view-link" href="#${k==='service'?'terms':'privacy'}" target="_blank" rel="noopener">${t('view')}</a>`:''}</div>`).join('')}</div>
     <div class="au-hint" id="au-ghint"></div>${err('au-gerr',G.err)}<button class="pill au-go" id="au-ggo" type="submit">${t('create')}</button></form>
    <p class="au-switch">${t('haveAcc')} <button type="button" class="au-link" data-act="toLogin">${t('toLogin')}</button></p></div>`}
  function tplReset(){const i=['email','otp','newPassword'].indexOf(R.step);
@@ -2558,6 +2579,102 @@ const AU=(()=>{const $=id=>document.getElementById(id);
  $('auth').addEventListener('click',e=>{if(e.target.id==='auth'||e.target.closest('.au-x')){const cb=null;close()}});
  return{open,close,relang,api}})();
 function openAuth(m,cb){AU.open(m,cb)}
+/* ===== Legal pages: #terms · #privacy (source: rorr.club/terms, rorr.club/privacy — last updated July 8, 2025) ===== */
+const LEGAL=(()=>{
+ const D={
+ terms:{en:{t:'Terms & Conditions',lead:['Welcome to RORR! These Terms and Conditions ("Terms") govern your use of our website https://rorr.club, Chrome extension, and other services we offer (collectively, the "Service").','By using the Service, you agree to these Terms and our Privacy Policy.'],s:[
+  ['1. Service Overview',[['p','RORR enables esports fans to directly support teams and players through real-time donations, quizzes, Cheerful cards, and interactive overlays, accessible via our web app and Chrome extension.']]],
+  ['2. Eligibility',[['p','You must be:'],['ul',['At least 13 years old (or the minimum age of digital consent in your jurisdiction, such as 16 in the EU/UK).','Authorized to accept these Terms in your country.']],['p','Minors under 18 must have parental consent.']]],
+  ['3. User Accounts',[['p','You agree to:'],['ul',['Provide accurate information during registration.','Keep your account credentials secure.','Notify us promptly at support@piepie.co of unauthorized account activity.']],['p','You are responsible for all actions under your account.']]],
+  ['4. Donations, Energy, and Refunds',[['h3','4.1 Donations & Energy Usage'],['ul',['Donations and Energy usage are voluntary and final once used.','Teams generally receive 70% of the donation, with the remainder covering fees.','We are not responsible for how teams use donations.']],
+   ['h3','4.2 Recharge Refunds'],['ul',['You may request a refund if the purchased Energy remains fully unused.','If any amount of Energy has been used for a donation, Cheerful, or any paid feature, the entire balance becomes non-refundable.']],['p','Example: Recharge 10,000 Energy → Use 100 → Remaining 9,900 Energy is non-refundable.'],
+   ['h3','4.3 Unauthorized Transactions'],['p','Report suspected fraud at support@piepie.co. Verified fraud may be refunded.'],
+   ['h3','4.4 Refund Processing'],['p','Approved refunds are processed to the original payment method within 7–14 business days.']]],
+  ['5. Virtual Goods & Content',[['p','All sales of digital goods (e.g., stickers, boosters, Cheerful cards) are final after delivery, except for technical defects.']]],
+  ['6. Community Guidelines',[['h3','6.1 Respectful Conduct'],['ul',['Be kind to players, teams, and other fans.','No harassment, hate speech, or personal attacks.','No spam or abusive content.']],['h3','6.2 Fair Play & Integrity'],['ul',['No cheating, fraud, or disruptive behavior.','Keep your content esports-relevant.']],['h3','6.3 Moderation & Reporting'],['p','We may suspend or remove accounts violating these rules. You can report abuse via the platform or by email.']]],
+  ['7. Cookies & Tracking',[['h3','7.1 What We Use'],['p','We use cookies for:'],['ul',['Essential service functionality','Analytics and performance measurement','Personalizing content and ads (optional, consent required)']],['h3','7.2 Your Choices'],['p','You can manage cookie settings in your browser. For California residents, see Section 16 for your opt-out rights.']]],
+  ['8. Intellectual Property',[['p','All platform content and technology are owned by RORR or licensed to us.'],['p','You retain ownership of your original user content but grant us a license to display it within the platform.']]],
+  ['9. Platform Availability',[['p','We strive to provide stable services but do not guarantee uninterrupted access. Features may change without notice.']]],
+  ['10. Third-Party Services',[['p','RORR integrates with streaming platforms (e.g., Twitch, YouTube). We are not responsible for their availability or policies.']]],
+  ['11. Privacy & Data Protection (GDPR & CCPA Compliance)',[['p','We process your data according to:'],['ul',['The General Data Protection Regulation (GDPR) for EU/UK users','The California Consumer Privacy Act (CCPA) for California residents']],['h3','Your rights include:'],['ul',['Access, correction, or deletion of your personal data','Restrict or object to certain data processing','Data portability','Withdraw consent at any time','File a complaint with your data protection authority']],['h3','California residents also have the right to:'],['ul',['Know what personal information we collect','Request deletion of your data','Opt-out of the sale or sharing of your data (we do not sell personal data)','Not be discriminated against for exercising your privacy rights']],['link','For details, see our Privacy Policy.','privacy']]],
+  ['12. International Data Transfers',[['p','If you access the Service outside Korea, your data may be transferred to and processed in Korea or other countries.'],['p','We use lawful safeguards such as Standard Contractual Clauses for data transfers where required.']]],
+  ['13. Disclaimer of Warranties',[['p','The Service is provided “as is,” without warranties of any kind.'],['p','We do not guarantee uninterrupted service, error-free operation, or results.']]],
+  ['14. Limitation of Liability',[['p','To the fullest extent permitted by law, we are not liable for indirect, incidental, or consequential damages.'],['p','Our total liability is capped at the amount you paid to us in the last 12 months.']]],
+  ['15. Termination',[['p','You may stop using the Service at any time. We may suspend or terminate your account for breach of these Terms.']]],
+  ['16. California Privacy Rights (CCPA)',[['p','If you are a California resident, you may exercise your rights by contacting support@piepie.co.'],['p','We currently do not sell personal data under the CCPA.'],['p','To opt-out of data sharing for targeted ads (if applicable in the future), please contact us.']]],
+  ['17. Changes to These Terms',[['p','We may modify these Terms. Significant changes will be notified in advance. Continued use after updates indicates acceptance.']]],
+  ['18. Governing Law & Dispute Resolution',[['p','These Terms are governed by the laws of the Republic of Korea.'],['p','Disputes will be resolved in the courts of Seoul, Korea.']]],
+  ['19. Contact Us',[['p','For questions regarding these Terms or your privacy rights, contact:'],['ul',['Email: support@piepie.co','Website: https://rorr.club']]]]]},
+ ko:{t:'이용약관',lead:['RORR에 오신 것을 환영합니다. 본 이용약관("약관")은 당사 웹사이트 https://rorr.club, Chrome 확장 프로그램 및 당사가 제공하는 기타 서비스(이하 통칭하여 "서비스")의 이용에 적용됩니다.','서비스를 이용함으로써 귀하는 본 약관과 당사의 개인정보처리방침에 동의하게 됩니다.'],s:[
+  ['1. 서비스 개요',[['p','RORR는 웹 앱과 Chrome 확장 프로그램을 통해 실시간 후원, 퀴즈, 응원(Cheerful) 카드, 인터랙티브 오버레이 등으로 e스포츠 팬이 팀과 선수를 직접 응원할 수 있게 하는 서비스입니다.']]],
+  ['2. 이용 자격',[['p','다음 요건을 충족해야 합니다.'],['ul',['만 13세 이상(또는 거주 지역의 디지털 동의 최소 연령 이상. 예: EU/영국은 만 16세)','거주 국가에서 본 약관에 동의할 수 있는 권한 보유']],['p','만 18세 미만 미성년자는 법정대리인의 동의가 필요합니다.']]],
+  ['3. 사용자 계정',[['p','귀하는 다음에 동의합니다.'],['ul',['가입 시 정확한 정보를 제공합니다.','계정 로그인 정보를 안전하게 관리합니다.','계정이 무단으로 사용된 사실을 알게 되면 즉시 support@piepie.co로 알립니다.']],['p','귀하의 계정에서 이루어지는 모든 행위에 대한 책임은 귀하에게 있습니다.']]],
+  ['4. 후원, Energy 및 환불',[['h3','4.1 후원 및 Energy 사용'],['ul',['후원과 Energy 사용은 자발적이며, 한 번 사용하면 취소할 수 없습니다.','일반적으로 팀은 후원금의 70%를 받으며, 나머지는 수수료로 충당됩니다.','당사는 팀이 후원금을 사용하는 방식에 대해 책임지지 않습니다.']],
+   ['h3','4.2 충전 환불'],['ul',['구매한 Energy를 전혀 사용하지 않은 경우 환불을 요청할 수 있습니다.','Energy를 후원, Cheerful 또는 유료 기능에 조금이라도 사용한 경우, 남은 잔액 전체가 환불 대상에서 제외됩니다.']],['p','예: 10,000 Energy 충전 → 100 사용 → 남은 9,900 Energy는 환불되지 않습니다.'],
+   ['h3','4.3 승인되지 않은 거래'],['p','부정 결제가 의심되면 support@piepie.co로 신고해 주세요. 부정 결제로 확인된 경우 환불될 수 있습니다.'],
+   ['h3','4.4 환불 처리'],['p','승인된 환불은 영업일 기준 7~14일 이내에 원래 결제 수단으로 처리됩니다.']]],
+  ['5. 디지털 상품 및 콘텐츠',[['p','모든 디지털 상품(예: 스티커, 부스터, Cheerful 카드)은 기술적 결함이 있는 경우를 제외하고 제공된 후에는 판매가 확정되며 취소할 수 없습니다.']]],
+  ['6. 커뮤니티 가이드라인',[['h3','6.1 서로 존중하기'],['ul',['선수, 팀, 다른 팬에게 예의를 지켜 주세요.','괴롭힘, 혐오 표현, 인신공격은 금지됩니다.','스팸이나 모욕적인 콘텐츠는 금지됩니다.']],['h3','6.2 공정성과 신뢰'],['ul',['부정행위, 사기, 서비스 방해 행위는 금지됩니다.','e스포츠와 관련된 콘텐츠를 올려 주세요.']],['h3','6.3 관리 및 신고'],['p','이 규칙을 위반한 계정은 정지되거나 삭제될 수 있습니다. 부적절한 행위는 서비스 내 기능이나 이메일로 신고할 수 있습니다.']]],
+  ['7. 쿠키 및 추적',[['h3','7.1 사용하는 쿠키'],['p','당사는 다음 목적으로 쿠키를 사용합니다.'],['ul',['서비스의 필수 기능 제공','분석 및 성능 측정','콘텐츠 및 광고 맞춤화(선택 사항, 동의 필요)']],['h3','7.2 선택권'],['p','쿠키 설정은 브라우저에서 관리할 수 있습니다. 캘리포니아 거주자의 수신 거부 권리는 제16조를 참고해 주세요.']]],
+  ['8. 지식재산권',[['p','서비스의 모든 콘텐츠와 기술은 RORR가 소유하거나 RORR에 이용이 허락된 것입니다.'],['p','귀하가 직접 만든 콘텐츠의 소유권은 귀하에게 있으며, 귀하는 당사가 해당 콘텐츠를 서비스 내에 표시할 수 있도록 이용을 허락합니다.']]],
+  ['9. 서비스 제공',[['p','당사는 안정적인 서비스 제공을 위해 노력하지만, 서비스가 중단 없이 제공된다고 보장하지는 않습니다. 기능은 사전 고지 없이 변경될 수 있습니다.']]],
+  ['10. 제3자 서비스',[['p','RORR는 스트리밍 플랫폼(예: Twitch, YouTube)과 연동됩니다. 당사는 해당 플랫폼의 이용 가능 여부나 정책에 대해 책임지지 않습니다.']]],
+  ['11. 개인정보 및 데이터 보호(GDPR 및 CCPA 준수)',[['p','당사는 다음 법령에 따라 귀하의 데이터를 처리합니다.'],['ul',['EU/영국 이용자: 일반 개인정보 보호법(GDPR)','캘리포니아 거주자: 캘리포니아 소비자 개인정보 보호법(CCPA)']],['h3','귀하의 권리'],['ul',['개인정보 열람, 정정 또는 삭제','특정 데이터 처리의 제한 또는 거부','데이터 이동','언제든지 동의 철회','개인정보 보호 감독기관에 민원 제기']],['h3','캘리포니아 거주자의 추가 권리'],['ul',['당사가 수집하는 개인정보의 항목을 알 권리','개인정보 삭제 요청','개인정보 판매 또는 공유 거부(당사는 개인정보를 판매하지 않습니다)','개인정보 권리 행사를 이유로 차별받지 않을 권리']],['link','자세한 내용은 개인정보처리방침을 확인해 주세요.','privacy']]],
+  ['12. 국외 데이터 이전',[['p','한국 외 지역에서 서비스를 이용하는 경우, 귀하의 데이터가 한국 또는 다른 국가로 이전되어 처리될 수 있습니다.'],['p','필요한 경우 당사는 표준계약조항(SCC) 등 적법한 보호 조치를 적용해 데이터를 이전합니다.']]],
+  ['13. 보증의 부인',[['p','서비스는 어떠한 종류의 보증 없이 "있는 그대로" 제공됩니다.'],['p','당사는 서비스의 중단 없는 제공, 오류 없는 운영 또는 특정 결과를 보장하지 않습니다.']]],
+  ['14. 책임의 제한',[['p','법이 허용하는 최대 범위에서, 당사는 간접적·부수적·결과적 손해에 대해 책임지지 않습니다.'],['p','당사의 총 책임은 귀하가 최근 12개월 동안 당사에 지급한 금액을 한도로 합니다.']]],
+  ['15. 이용 종료',[['p','귀하는 언제든지 서비스 이용을 중단할 수 있습니다. 당사는 귀하가 본 약관을 위반한 경우 계정을 정지하거나 해지할 수 있습니다.']]],
+  ['16. 캘리포니아 개인정보 권리(CCPA)',[['p','캘리포니아 거주자는 support@piepie.co로 연락해 권리를 행사할 수 있습니다.'],['p','당사는 현재 CCPA상 개인정보를 판매하지 않습니다.'],['p','(향후 해당되는 경우) 맞춤형 광고를 위한 데이터 공유를 거부하려면 당사에 연락해 주세요.']]],
+  ['17. 약관의 변경',[['p','당사는 본 약관을 변경할 수 있으며, 중요한 변경 사항은 사전에 알려 드립니다. 변경 후에도 서비스를 계속 이용하면 변경된 약관에 동의한 것으로 봅니다.']]],
+  ['18. 준거법 및 분쟁 해결',[['p','본 약관은 대한민국 법률에 따릅니다.'],['p','분쟁은 대한민국 서울 소재 법원에서 해결합니다.']]],
+  ['19. 문의',[['p','본 약관이나 개인정보 권리에 관한 문의는 아래로 연락해 주세요.'],['ul',['이메일: support@piepie.co','웹사이트: https://rorr.club']]]]]}},
+ privacy:{en:{t:'Privacy Policy',lead:['This Privacy Policy explains how RORR (“we,” “our,” or “us”) collects, uses, and protects your personal data when you use our website (https://rorr.club), Chrome extension, and related services (collectively, the "Service").'],s:[
+  ['1. Who We Are',[['p','RORR operates a fan engagement platform that enables esports fans to support their favorite teams and players through real-time donations, quizzes, and interactive overlays.'],['p','For privacy-related inquiries, contact:'],['ul',['Email: support@piepie.co']]]],
+  ['2. Information We Collect',[['h3','2.1 Information You Provide'],['ul',['Account registration: Email address, username, password (encrypted)','Profile details: Team follow preferences, avatar','Donations and purchases: Amounts, transaction details (processed by third-party providers)']],
+   ['h3','2.2 Automatically Collected Data'],['ul',['Browser type, operating system, IP address, device identifiers','Usage data (donations, quizzes, Cheerful interactions)','Session data from the Chrome extension and web app','Cookies, local storage, and analytics data']],
+   ['h3','2.3 From Third Parties'],['ul',['Payment providers (e.g., payment status)','Authentication platforms']]]],
+  ['3. How We Use Your Information',[['p','We use your personal data to:'],['ul',['Operate and maintain the Service','Process donations and transactions','Analyze fan engagement and personalize your experience','Deliver real-time statistics, quizzes, and community rankings','Provide customer support','Send optional marketing communications (with your consent)','Prevent fraud, abuse, or unauthorized activity','Comply with legal obligations']]]],
+  ['4. Sharing Your Information',[['p','We do not sell your personal data.'],['p','We may share anonymized or aggregated fan engagement data with:'],['ul',['Esports teams and leagues for fan rankings and reward fulfillment','Payment processors and service providers for technical operations','Legal authorities when required by law']]]],
+  ['5. International Transfers',[['p','Your data may be transferred to and processed in countries outside your own, such as Korea or the United States.'],['p','When required, we implement safeguards like Standard Contractual Clauses (SCCs) to protect your data.']]],
+  ['6. Cookies and Tracking',[['p','We use cookies and similar technologies to:'],['ul',['Keep you logged in','Analyze site usage','Personalize content and offers']],['p','You can manage your cookie preferences in your browser settings. For EU/UK users, we obtain consent where required.']]],
+  ['7. Your Rights (GDPR & CCPA)',[['h3','If You Are in the EU/UK (GDPR):'],['p','You have the right to:'],['ul',['Access your personal data','Request correction or deletion','Restrict or object to certain processing','Request data portability','Withdraw consent at any time','Lodge a complaint with your data protection authority']],
+   ['h3','If You Are a California Resident (CCPA):'],['p','You have the right to:'],['ul',['Know what personal information we collect','Access and request deletion of your personal data','Opt-out of the sale or sharing of personal information (we do not sell your personal data)','Not be discriminated against for exercising your privacy rights']],
+   ['p','You may exercise your rights by contacting us at support@piepie.co.'],['p','For verified requests, we will confirm your identity and respond within 45 days (or as required by law).']]],
+  ['8. Data Retention',[['p','We retain your data as long as your account is active. After account deletion, we delete your data within 30 days unless required otherwise by law. Some aggregated or anonymized data may be retained for analytics.']]],
+  ['9. Security',[['p','We protect your data using:'],['ul',['AES-256 encryption for sensitive information','TLS/HTTPS secure communications','Access controls and activity monitoring']]]],
+  ['10. Children’s Privacy',[['p','RORR does not knowingly collect data from individuals under 13 (or under the applicable age threshold in your country).'],['p','If we discover we have collected such data, we will delete it promptly.']]],
+  ['11. Changes to This Policy',[['p','We may update this Privacy Policy periodically. Significant changes will be notified on the Service and/or by email.']]],
+  ['12. Contact Information',[['p','If you have any questions or wish to exercise your privacy rights:'],['ul',['Email: support@piepie.co','Website: https://rorr.club']]]]]},
+ ko:{t:'개인정보처리방침',lead:['본 개인정보처리방침은 RORR("당사")가 웹사이트(https://rorr.club), Chrome 확장 프로그램 및 관련 서비스(이하 통칭하여 "서비스")를 이용하는 귀하의 개인정보를 어떻게 수집·이용·보호하는지 설명합니다.'],s:[
+  ['1. 운영 주체',[['p','RORR는 e스포츠 팬이 실시간 후원, 퀴즈, 인터랙티브 오버레이를 통해 좋아하는 팀과 선수를 응원할 수 있는 팬 참여 플랫폼을 운영합니다.'],['p','개인정보 관련 문의:'],['ul',['이메일: support@piepie.co']]]],
+  ['2. 수집하는 정보',[['h3','2.1 귀하가 직접 제공하는 정보'],['ul',['회원가입: 이메일 주소, 사용자 이름, 비밀번호(암호화 저장)','프로필: 팔로우하는 팀, 아바타','후원 및 구매: 금액, 거래 정보(제3자 결제 대행사가 처리)']],
+   ['h3','2.2 자동으로 수집되는 정보'],['ul',['브라우저 종류, 운영체제, IP 주소, 기기 식별자','이용 기록(후원, 퀴즈, Cheerful 이용)','Chrome 확장 프로그램 및 웹 앱의 세션 정보','쿠키, 로컬 스토리지, 분석 데이터']],
+   ['h3','2.3 제3자로부터 받는 정보'],['ul',['결제 대행사(예: 결제 상태)','인증(로그인) 플랫폼']]]],
+  ['3. 개인정보의 이용 목적',[['p','당사는 개인정보를 다음 목적으로 이용합니다.'],['ul',['서비스 운영 및 유지','후원 및 거래 처리','팬 참여 분석 및 맞춤형 경험 제공','실시간 통계, 퀴즈, 커뮤니티 순위 제공','고객 지원','마케팅 정보 발송(동의한 경우에 한함)','사기, 악용 및 무단 이용 방지','법적 의무 이행']]]],
+  ['4. 개인정보의 제공',[['p','당사는 귀하의 개인정보를 판매하지 않습니다.'],['p','당사는 익명화되거나 집계된 팬 참여 데이터를 다음 대상과 공유할 수 있습니다.'],['ul',['e스포츠 팀 및 리그: 팬 순위 산정 및 보상 지급','결제 대행사 및 서비스 제공업체: 기술적 운영','수사·사법 기관: 법률에 따라 요구되는 경우']]]],
+  ['5. 국외 이전',[['p','귀하의 데이터는 한국이나 미국 등 귀하의 거주 국가 밖으로 이전되어 처리될 수 있습니다.'],['p','필요한 경우 당사는 표준계약조항(SCC) 등 보호 조치를 적용해 귀하의 데이터를 보호합니다.']]],
+  ['6. 쿠키 및 추적',[['p','당사는 쿠키 및 유사 기술을 다음 목적으로 사용합니다.'],['ul',['로그인 상태 유지','사이트 이용 분석','콘텐츠 및 혜택 맞춤화']],['p','쿠키 설정은 브라우저 설정에서 관리할 수 있습니다. EU/영국 이용자의 경우 필요한 때에 동의를 받습니다.']]],
+  ['7. 이용자의 권리(GDPR 및 CCPA)',[['h3','EU/영국 거주자(GDPR)'],['p','귀하는 다음 권리를 가집니다.'],['ul',['개인정보 열람','정정 또는 삭제 요청','특정 처리의 제한 또는 거부','데이터 이동 요청','언제든지 동의 철회','개인정보 보호 감독기관에 민원 제기']],
+   ['h3','캘리포니아 거주자(CCPA)'],['p','귀하는 다음 권리를 가집니다.'],['ul',['당사가 수집하는 개인정보의 항목을 알 권리','개인정보 열람 및 삭제 요청','개인정보 판매 또는 공유 거부(당사는 개인정보를 판매하지 않습니다)','개인정보 권리 행사를 이유로 차별받지 않을 권리']],
+   ['p','권리는 support@piepie.co로 연락해 행사할 수 있습니다.'],['p','확인된 요청에 대해서는 본인 확인 후 45일 이내(또는 법률이 정한 기간 내)에 답변합니다.']]],
+  ['8. 보유 기간',[['p','당사는 계정이 유지되는 동안 데이터를 보관합니다. 계정 삭제 후에는 법률에 따로 정한 경우를 제외하고 30일 이내에 데이터를 삭제합니다. 일부 집계되거나 익명화된 데이터는 분석 목적으로 보관될 수 있습니다.']]],
+  ['9. 안전성 확보 조치',[['p','당사는 다음과 같은 방법으로 데이터를 보호합니다.'],['ul',['민감 정보 AES-256 암호화','TLS/HTTPS 보안 통신','접근 통제 및 이용 기록 모니터링']]]],
+  ['10. 아동의 개인정보',[['p','RORR는 만 13세 미만(또는 귀하 국가의 해당 연령 기준 미만)인 사람의 개인정보를 알면서 수집하지 않습니다.'],['p','이러한 정보를 수집한 사실을 알게 되면 즉시 삭제합니다.']]],
+  ['11. 방침의 변경',[['p','당사는 본 개인정보처리방침을 수시로 변경할 수 있으며, 중요한 변경 사항은 서비스 내 공지 및/또는 이메일로 알려 드립니다.']]],
+  ['12. 문의처',[['p','개인정보에 관한 문의나 권리 행사는 아래로 연락해 주세요.'],['ul',['이메일: support@piepie.co','웹사이트: https://rorr.club']]]]]}}};
+ const UI={en:{k:'Legal',upd:'Last updated: July 8, 2025',toc:'Contents',terms:'Terms',privacy:'Privacy'},ko:{k:'법적 고지',upd:'최종 업데이트: 2025년 7월 8일',toc:'목차',terms:'이용약관',privacy:'개인정보처리방침'}};
+ let cur='terms';
+ const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+ const fmt=s=>esc(s).replace(/support@piepie\.co/g,'<a href="mailto:support@piepie.co">support@piepie.co</a>').replace(/https:\/\/rorr\.club(?![\w/])/g,'<a href="https://rorr.club" target="_blank" rel="noopener">https://rorr.club</a>');
+ function render(which){if(which)cur=which;const L=LANG==='ko'?'ko':'en',d=D[cur][L],u=UI[L],el=document.getElementById('legal');if(!el)return;
+  const block=([k,v,x])=>k==='p'?`<p>${fmt(v)}</p>`:k==='h3'?`<h3>${esc(v)}</h3>`:k==='ul'?`<ul>${v.map(i=>`<li>${fmt(i)}</li>`).join('')}</ul>`:k==='link'?`<p><a href="#${x}" onclick="nav(event,'${x}')">${esc(v)}</a></p>`:'';
+  el.innerHTML=`<div class="pmeta"><span>${u.k}</span></div><h1>${esc(d.t)}</h1><div class="by">${u.upd}</div>
+   <nav class="lg-tabs" aria-label="${u.k}"><a href="#terms" class="${cur==='terms'?'on':''}" onclick="nav(event,'terms')">${u.terms}</a><a href="#privacy" class="${cur==='privacy'?'on':''}" onclick="nav(event,'privacy')">${u.privacy}</a></nav>
+   <div class="pbody lg-body">${d.lead.map(p=>`<p class="lg-lead">${fmt(p)}</p>`).join('')}
+   <details class="lg-toc" open><summary>${u.toc}</summary><ol>${d.s.map((s,i)=>`<li><a href="#${cur}" data-sec="${i}">${esc(s[0])}</a></li>`).join('')}</ol></details>
+   ${d.s.map((s,i)=>`<section class="lg-sec" id="lg-${i}"><h2>${esc(s[0])}</h2>${s[1].map(block).join('')}</section>`).join('')}</div>`}
+ document.addEventListener('click',e=>{const a=e.target.closest('.lg-toc a[data-sec]');if(!a)return;e.preventDefault();const s=document.getElementById('lg-'+a.dataset.sec);if(s)s.scrollIntoView({behavior:'smooth',block:'start'})});
+ return{render,relang(){if(document.getElementById('pg-legal').classList.contains('on'))render()}}})();
 /* ===== settings: password change + hidden account deletion ===== */
 const PW=(()=>{const $=id=>document.getElementById(id);
  function toggle(show){const f=$('pw-form');f.hidden=!show;$('pw-open').hidden=show;if(show){$('pw-cur').focus()}else{f.reset();$('pw-err').textContent='';meter()}}
@@ -2766,7 +2883,7 @@ function setLang(l){LANG=l;setTimeout(()=>{try{renderTicker();if(curMatch&&docum
  obs.disconnect();if(l==='ko'){walk(document.body);obs.observe(document.body,OBS_CFG)}else restoreAll()}
 (function(){let l=null;try{l=localStorage.getItem('rorr-lang')}catch(e){}setLang(l==='ko'?'ko':'en')})();
 setMode('fan');
-const ih=location.hash.slice(1);if(ih.startsWith('account/')){login();route_(ih)}else if(ih==='blog'||ih.startsWith('blog/'))route_(ih);
+const ih=location.hash.slice(1);if(ih.startsWith('account/')){login();route_(ih)}else if(ih==='blog'||ih.startsWith('blog/')||ih==='terms'||ih==='privacy')route_(ih);
 
 /* ===== contact form (static: hands off to email until a form backend is connected) ===== */
 const CT=(()=>{const $=id=>document.getElementById(id);let k='idea';
@@ -2821,7 +2938,7 @@ const HC=(()=>{const root=document.getElementById('hc');if(!root)return{render()
   const q=e.target.closest('[data-askm]');if(q&&root.contains(q)){e.preventDefault();e.stopPropagation();enterChat(q.dataset.askm)}},true);
  restart();return{render,go}})();
 </script>
-<script>(function(){if(typeof AU==="undefined")return;var sl=setLang;setLang=function(l){sl(l);setTimeout(function(){AU.relang()},0)}})();</script>
+<script>(function(){if(typeof AU==="undefined")return;var sl=setLang;setLang=function(l){sl(l);setTimeout(function(){AU.relang();if(typeof LEGAL!=="undefined")LEGAL.relang()},0)}})();</script>
 <script>/* LwRC is a proper noun: keep the lowercase w even inside uppercase UI (pills, kickers, headers) */(function(){var R=/LwRC/;function fix(root){var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),hits=[],n;while(n=w.nextNode()){var p=n.parentElement;if(R.test(n.nodeValue)&&p&&!p.closest(".m,script,style,textarea,title")&&getComputedStyle(p).textTransform!=="none")hits.push(n)}hits.forEach(function(t){var f=document.createDocumentFragment();t.nodeValue.split(/(LwRC\+?)/).forEach(function(s){if(!s)return;if(R.test(s)){var e=document.createElement("span");e.className="m";e.textContent=s;f.appendChild(e)}else f.appendChild(document.createTextNode(s))});t.parentNode.replaceChild(f,t)})}var q=0;function run(){q=0;fix(document.body)}new MutationObserver(function(){if(!q)q=setTimeout(run,0)}).observe(document.body,{childList:true,subtree:true,characterData:true});run()})();</script>
 </body>
 </html>
