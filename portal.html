@@ -2612,5 +2612,6 @@ const HC=(()=>{const root=document.getElementById('hc');if(!root)return{render()
   const q=e.target.closest('[data-askm]');if(q&&root.contains(q)){e.preventDefault();e.stopPropagation();enterChat(q.dataset.askm)}},true);
  restart();return{render,go}})();
 </script>
+<script>/* LwRC is a proper noun: keep the lowercase w even inside uppercase UI (pills, kickers, headers) */(function(){var R=/LwRC/;function fix(root){var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),hits=[],n;while(n=w.nextNode()){var p=n.parentElement;if(R.test(n.nodeValue)&&p&&!p.closest(".m,script,style,textarea,title")&&getComputedStyle(p).textTransform!=="none")hits.push(n)}hits.forEach(function(t){var f=document.createDocumentFragment();t.nodeValue.split(/(LwRC\+?)/).forEach(function(s){if(!s)return;if(R.test(s)){var e=document.createElement("span");e.className="m";e.textContent=s;f.appendChild(e)}else f.appendChild(document.createTextNode(s))});t.parentNode.replaceChild(f,t)})}var q=0;function run(){q=0;fix(document.body)}new MutationObserver(function(){if(!q)q=requestAnimationFrame(run)}).observe(document.body,{childList:true,subtree:true,characterData:true});run()})();</script>
 </body>
 </html>
