@@ -1010,6 +1010,9 @@ body.authing{overflow:hidden}body.authing .auth{display:flex;animation:fadeIn .2
 @media (max-width:640px){.legal .lg-toc ol{columns:1}}
 .au-terms a{color:var(--cyan);text-decoration:underline}
 /* ===== auth v2: sign up (OTP) + password reset ===== */
+.au-page{display:flex;justify-content:center;align-items:flex-start;padding:56px 16px 110px;min-height:calc(100vh - 150px)}
+.au-page .au-card{max-height:none;overflow:visible;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+body:has(#pg-auth.on) .siderail{display:none!important}
 .au-err:empty{display:none}
 .au-in{position:relative;display:block}.au-in input{width:100%}
 .au-in-btn{display:flex;gap:8px}.au-in-btn input{flex:1;min-width:0}
@@ -1644,6 +1647,21 @@ body:not(.ip-open) .ipanel{box-shadow:none!important}
 <div class="rpage" id="pg-legal" data-r="legal">
  <article class="post wrap legal" id="legal"></article>
 </div>
+<div class="rpage" id="pg-auth" data-r="auth">
+ <div class="au-page" id="auth">
+  <div class="au-card" aria-labelledby="au-title">
+   <button class="au-x" type="button" aria-label="Close">×</button>
+   <img class="au-logo" src="assets/rorr-logo-96.png" alt="RORR">
+   <div id="au-body"></div>
+   <p class="au-demo" id="au-demo"></p>
+  </div>
+  <template id="au-prov-tpl"><div class="au-prov">
+    <button type="button" data-prov="Google"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M22 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.6c-.2 1.3-1 2.4-2.1 3.1v2.6h3.4c2-1.8 3.1-4.5 3.1-7.5z"/><path fill="#34A853" d="M12 22.5c2.8 0 5.2-.9 6.9-2.5l-3.4-2.6c-.9.6-2.1 1-3.5 1-2.7 0-5-1.8-5.8-4.3H2.7v2.7c1.7 3.4 5.3 5.7 9.3 5.7z"/><path fill="#FBBC05" d="M6.2 14.1c-.2-.6-.3-1.3-.3-2.1s.1-1.4.3-2.1V7.2H2.7C2 8.6 1.6 10.3 1.6 12s.4 3.4 1.1 4.8l3.5-2.7z"/><path fill="#EA4335" d="M12 5.6c1.5 0 2.9.5 4 1.6l3-3C17.2 2.5 14.8 1.5 12 1.5 8 1.5 4.4 3.8 2.7 7.2l3.5 2.7C7 7.4 9.3 5.6 12 5.6z"/></svg>Continue with Google</button>
+    <button type="button" data-prov="Apple"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.4 12.6c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.9-3.5.9-.7 0-1.8-.9-3-.8-1.5 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.4 2.9 2.3 1.2 0 1.6-.7 3-.7s1.8.7 3 .7c1.3 0 2.1-1.1 2.8-2.3.9-1.3 1.3-2.6 1.3-2.7 0 0-2.5-1-2.5-3.7zM14.2 5.8c.6-.8 1.1-1.9 1-3-.9 0-2.1.6-2.7 1.4-.6.7-1.1 1.8-1 2.9 1 .1 2.1-.5 2.7-1.3z"/></svg>Continue with Apple</button>
+    <button type="button" data-prov="Microsoft"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#F25022" d="M2 2h9.5v9.5H2z"/><path fill="#7FBA00" d="M12.5 2H22v9.5h-9.5z"/><path fill="#00A4EF" d="M2 12.5h9.5V22H2z"/><path fill="#FFB900" d="M12.5 12.5H22V22h-9.5z"/></svg>Continue with Microsoft</button>
+   </div></template>
+ </div>
+</div>
 <div class="rpage" id="pg-contact" data-r="contact">
  <section class="rhero" style="padding-bottom:28px">
   <div class="k">CONTACT</div>
@@ -1726,19 +1744,6 @@ body:not(.ip-open) .ipanel{box-shadow:none!important}
   </div>
   <div class="md-foot"><span>Muse reacts to the match and cheers with you. She never reads numbers at you.</span><a class="pill" id="md-cta" href="https://chromewebstore.google.com/detail/rorr/aeijenbcnhhmcgknnimiddbdgpndfcpn" target="_blank" rel="noopener">Add Muse to Chrome · Free</a></div>
  </div>
-</div>
-<div class="auth" id="auth" role="dialog" aria-modal="true" aria-labelledby="au-title">
- <div class="au-card">
-  <button class="au-x" type="button" aria-label="Close">×</button>
-  <img class="au-logo" src="assets/rorr-logo-96.png" alt="RORR">
-  <div id="au-body"></div>
-  <p class="au-demo" id="au-demo"></p>
- </div>
- <template id="au-prov-tpl"><div class="au-prov">
-    <button type="button" data-prov="Google"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M22 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.6c-.2 1.3-1 2.4-2.1 3.1v2.6h3.4c2-1.8 3.1-4.5 3.1-7.5z"/><path fill="#34A853" d="M12 22.5c2.8 0 5.2-.9 6.9-2.5l-3.4-2.6c-.9.6-2.1 1-3.5 1-2.7 0-5-1.8-5.8-4.3H2.7v2.7c1.7 3.4 5.3 5.7 9.3 5.7z"/><path fill="#FBBC05" d="M6.2 14.1c-.2-.6-.3-1.3-.3-2.1s.1-1.4.3-2.1V7.2H2.7C2 8.6 1.6 10.3 1.6 12s.4 3.4 1.1 4.8l3.5-2.7z"/><path fill="#EA4335" d="M12 5.6c1.5 0 2.9.5 4 1.6l3-3C17.2 2.5 14.8 1.5 12 1.5 8 1.5 4.4 3.8 2.7 7.2l3.5 2.7C7 7.4 9.3 5.6 12 5.6z"/></svg>Continue with Google</button>
-    <button type="button" data-prov="Apple"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.4 12.6c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.9-3.5.9-.7 0-1.8-.9-3-.8-1.5 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.4 2.9 2.3 1.2 0 1.6-.7 3-.7s1.8.7 3 .7c1.3 0 2.1-1.1 2.8-2.3.9-1.3 1.3-2.6 1.3-2.7 0 0-2.5-1-2.5-3.7zM14.2 5.8c.6-.8 1.1-1.9 1-3-.9 0-2.1.6-2.7 1.4-.6.7-1.1 1.8-1 2.9 1 .1 2.1-.5 2.7-1.3z"/></svg>Continue with Apple</button>
-    <button type="button" data-prov="Microsoft"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#F25022" d="M2 2h9.5v9.5H2z"/><path fill="#7FBA00" d="M12.5 2H22v9.5h-9.5z"/><path fill="#00A4EF" d="M2 12.5h9.5V22H2z"/><path fill="#FFB900" d="M12.5 12.5H22V22h-9.5z"/></svg>Continue with Microsoft</button>
-   </div></template>
 </div>
 <div class="onb" id="onb" role="dialog" aria-modal="true" aria-labelledby="ob-t">
  <div class="ob-card">
@@ -1882,6 +1887,7 @@ function route_(r){const b=document.body;if(typeof MD!=='undefined'){if(r==='mus
  if(r.startsWith('match/')){b.classList.remove('chatting');b.classList.add('pagev');renderMatch(r.slice(6));document.getElementById('pg-match').classList.add('on');hdr.classList.add('solid');scrollTo(0,0);clearInterval(timer);return}
  if(r==='contact'){b.classList.remove('chatting');b.classList.add('pagev');CT.show();document.getElementById('pg-contact').classList.add('on');hdr.classList.add('solid');scrollTo(0,0);clearInterval(timer);return}
  if(r==='about'){b.classList.remove('chatting');b.classList.add('pagev');document.getElementById('pg-about').classList.add('on');hdr.classList.add('solid');scrollTo(0,0);clearInterval(timer);return}
+ if(r==='login'||r==='signup'||r==='forgot-password'){b.classList.remove('chatting');b.classList.add('pagev');document.getElementById('pg-auth').classList.add('on');AU.show(r);hdr.classList.add('solid');scrollTo(0,0);clearInterval(timer);return}
  if(r==='terms'||r==='privacy'){b.classList.remove('chatting');b.classList.add('pagev');LEGAL.render(r);document.getElementById('pg-legal').classList.add('on');hdr.classList.add('solid');scrollTo(0,0);clearInterval(timer);return}
  if(r==='wge')r='wrc';
  if(r==='wrc'){b.classList.remove('chatting');b.classList.add('pagev');document.getElementById('wf-lg').value=LG;wgRender();document.getElementById('pg-wge').classList.add('on');hdr.classList.add('solid');scrollTo(0,0);clearInterval(timer);return}
@@ -2438,7 +2444,9 @@ const AU=(()=>{const $=id=>document.getElementById(id);
  const errOf=r=>r&&r.message==='fail'?(r.data&&r.data.errorCode)||r.code||'UNKNOWN':null;
 
  /* --- state --- */
- let view='login',after=null,pending='',ticker=0,doneEmail='';
+ let view='login',after=null,pending='',ticker=0,doneEmail='',back='',keep=false;
+ const ROUTES={login:'login',signup:'signup','forgot-password':'reset'};
+ const onPage=()=>document.getElementById('pg-auth').classList.contains('on');
  let L,G,R;
  function fresh(){L={email:'',password:'',show:false,keep:false,err:''};
   G={email:'',otp:'idle',code:'',sendErr:'',verifyErr:'',exp:0,cool:0,password:'',show:false,confirm:'',show2:false,nick:'',terms:{service:false,privacy:false,marketing:false},err:'',touched:{}};
@@ -2495,7 +2503,7 @@ const AU=(()=>{const $=id=>document.getElementById(id);
  /* --- live validation (no re-render, keeps caret) --- */
  function paintPolicy(id,p){const ul=$(id);if(!ul)return;POLICY.forEach(([k,f])=>{const li=ul.querySelector(`[data-p="${k}"]`);li.classList.toggle('ok',!!p&&f(p))})}
  function signupReady(){return EMAIL_RE.test(G.email.trim())&&G.otp==='verified'&&pwOk(G.password)&&G.password===G.confirm&&G.nick.trim()&&G.terms.service&&G.terms.privacy}
- function refresh(){
+ function refresh(){if(!onPage())return;
   if(view==='login'){const go=$('au-lgo');if(go){go.disabled=pending==='login';go.textContent=pending==='login'?'…':t('loginGo')}
    document.querySelectorAll('#au-body [data-act=social]').forEach(b=>b.disabled=!!pending)}
   if(view==='signup'){paintPolicy('au-gpol',G.password);
@@ -2542,7 +2550,7 @@ const AU=(()=>{const $=id=>document.getElementById(id);
  async function resetConfirm(){pending='reset';R.err='';refresh();const r=await api('/auth/password-reset/confirm',{email:R.email.trim(),password:R.password,passwordConfirm:R.confirm});pending='';
   if(errOf(r)){R.err=t('resetErr');$('au-rerr').textContent=R.err;refresh();return}
   login();view='resetDone';render();toast(t('changedToast'))}
- function finish(msg){const cb=after;after=null;const wasIn=document.body.classList.contains('body-in');close();if(!wasIn)login();if(msg)toast(msg);if(cb)cb()}
+ function finish(msg){const cb=after;after=null;if(!document.body.classList.contains('body-in'))login();leave();if(msg)toast(msg);if(cb)setTimeout(cb,60)}
 
  /* --- events (delegated, bound once) --- */
  function bind(){const b=$('au-body');
@@ -2563,21 +2571,23 @@ const AU=(()=>{const $=id=>document.getElementById(id);
   b.addEventListener('click',e=>{const a=e.target.closest('[data-act]');if(!a)return;const act=a.dataset.act;
    if(act==='eye'){const f=a.dataset.f;const st={lpass:[L,'show'],gpass:[G,'show'],gconf:[G,'show2'],rpass:[R,'show'],rconf:[R,'show2']}[f];st[0][st[1]]=!st[0][st[1]];const i=$('au-'+f);i.type=st[0][st[1]]?'text':'password';a.textContent=st[0][st[1]]?t('hide'):t('show');i.focus();return}
    if(act==='social'){if(pending)return;pending='social';refresh();a.textContent='…';setTimeout(()=>{pending='';finish(t('loggedIn'))},700);return}
-   if(act==='toSignup'){if(EMAIL_RE.test(L.email.trim())&&!G.email)G.email=L.email.trim();view='signup';render('au-gemail');return}
-   if(act==='toLogin'){view='login';render('au-lemail');return}
-   if(act==='toReset'){R={...R,step:'email',email:R.email||L.email.trim(),err:''};view='reset';render('au-remail');return}
+   if(act==='toSignup'){if(EMAIL_RE.test(L.email.trim())&&!G.email)G.email=L.email.trim();keep=true;nav(null,'signup');return}
+   if(act==='toLogin'){keep=true;nav(null,'login');return}
+   if(act==='toReset'){R={...R,step:'email',email:R.email||L.email.trim(),err:''};keep=true;nav(null,'forgot-password');return}
    if(act==='sendOtp'){if(!pending)sendOtp();return}if(act==='verifyOtp'){if(!pending&&G.code.length===6)verifyOtp();return}
    if(act==='resendReset'){if(!pending)resetSend(true);return}if(act==='diffEmail'){R.step='email';R.err='';render('au-remail');return}
-   if(act==='finish'){const cb=after;after=null;close();if(cb)cb()}})}
+   if(act==='finish'){const cb=after;after=null;leave();if(cb)setTimeout(cb,60)}})}
 
  /* --- public --- */
- function open(m,cb){after=cb||null;fresh();view=m==='signup'?'signup':m==='reset'?'reset':'login';document.body.classList.add('authing');render(view==='signup'?'au-gemail':view==='reset'?'au-remail':'au-lemail');
-  clearInterval(ticker);ticker=setInterval(refresh,1000)}
- function close(){if(!document.body.classList.contains('authing'))return false;document.body.classList.remove('authing');clearInterval(ticker);fresh();view='login';return true}
- function relang(){if(document.body.classList.contains('authing'))render()}
+ function open(m,cb){after=cb||null;const cur=location.hash.slice(1);if(!ROUTES[cur])back=cur;nav(null,m==='signup'?'signup':m==='reset'?'forgot-password':'login')}
+ function show(r){const v=ROUTES[r]||'login';if(!keep){fresh();doneEmail=''}keep=false;view=v;const cur=location.hash.slice(1);
+  render(v==='signup'?'au-gemail':v==='reset'?'au-remail':'au-lemail');clearInterval(ticker);ticker=setInterval(refresh,1000)}
+ function leave(){clearInterval(ticker);const to=back;back='';fresh();view='login';if(to)nav(null,to);else{history.pushState({},'',location.pathname+location.search);route_('')}}
+ function close(){return false}
+ function relang(){if(onPage())render()}
  bind();
- $('auth').addEventListener('click',e=>{if(e.target.id==='auth'||e.target.closest('.au-x')){const cb=null;close()}});
- return{open,close,relang,api}})();
+ $('auth').addEventListener('click',e=>{if(e.target.closest('.au-x'))leave()});
+ return{open,close,relang,api,show,leave}})();
 function openAuth(m,cb){AU.open(m,cb)}
 /* ===== Legal pages: #terms · #privacy (source: rorr.club/terms, rorr.club/privacy — last updated July 8, 2025) ===== */
 const LEGAL=(()=>{
@@ -2883,7 +2893,7 @@ function setLang(l){LANG=l;setTimeout(()=>{try{renderTicker();if(curMatch&&docum
  obs.disconnect();if(l==='ko'){walk(document.body);obs.observe(document.body,OBS_CFG)}else restoreAll()}
 (function(){let l=null;try{l=localStorage.getItem('rorr-lang')}catch(e){}setLang(l==='ko'?'ko':'en')})();
 setMode('fan');
-const ih=location.hash.slice(1);if(ih.startsWith('account/')){login();route_(ih)}else if(ih==='blog'||ih.startsWith('blog/')||ih==='terms'||ih==='privacy')route_(ih);
+const ih=location.hash.slice(1);if(ih.startsWith('account/')){login();route_(ih)}else if(ih==='blog'||ih.startsWith('blog/')||ih==='terms'||ih==='privacy'||ih==='login'||ih==='signup'||ih==='forgot-password')route_(ih);
 
 /* ===== contact form (static: hands off to email until a form backend is connected) ===== */
 const CT=(()=>{const $=id=>document.getElementById(id);let k='idea';
