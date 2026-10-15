@@ -1013,6 +1013,11 @@ body.authing{overflow:hidden}body.authing .auth{display:flex;animation:fadeIn .2
 .au-page{display:flex;justify-content:center;align-items:flex-start;padding:56px 16px 110px;min-height:calc(100vh - 150px)}
 .au-page .au-card{max-height:none;overflow:visible;box-shadow:0 20px 60px rgba(0,0,0,.25)}
 body:has(#pg-auth.on) .siderail{display:none!important}
+body:has(#pg-auth.on) .signed-out .au-entry{visibility:hidden}
+body:has(#pg-auth.on) .askfab,body:has(#pg-auth.on) .demo{display:none!important}
+.au-page .au-card{padding:32px 32px 22px}
+.au-card h1.au-h{font-size:28px!important;line-height:1.15!important;letter-spacing:0!important;text-transform:uppercase!important;margin:0 0 8px}
+.au-done h1.au-h{font-size:26px!important}
 .au-err:empty{display:none}
 .au-in{position:relative;display:block}.au-in input{width:100%}
 .au-in-btn{display:flex;gap:8px}.au-in-btn input{flex:1;min-width:0}
@@ -1650,8 +1655,6 @@ body:not(.ip-open) .ipanel{box-shadow:none!important}
 <div class="rpage" id="pg-auth" data-r="auth">
  <div class="au-page" id="auth">
   <div class="au-card" aria-labelledby="au-title">
-   <button class="au-x" type="button" aria-label="Close">×</button>
-   <img class="au-logo" src="assets/rorr-logo-96.png" alt="RORR">
    <div id="au-body"></div>
    <p class="au-demo" id="au-demo"></p>
   </div>
@@ -2459,7 +2462,7 @@ const AU=(()=>{const $=id=>document.getElementById(id);
  const err=(id,txt)=>`<div class="au-err" id="${id}" role="alert">${esc(txt||'')}</div>`;
  function tplLogin(){const prov=$('au-prov-tpl').content.firstElementChild.cloneNode(true);
   prov.querySelectorAll('[data-prov]').forEach(b=>{const k=b.dataset.prov.toLowerCase();b.lastChild.nodeValue=t(k);b.dataset.act='social'});
-  return `<div class="au-view" data-v="login"><h2 id="au-title">${t('loginT')}</h2><p class="au-sub">${t('loginS')}</p>${prov.outerHTML}
+  return `<div class="au-view" data-v="login"><h1 id="au-title" class="au-h">${t('loginT')}</h1><p class="au-sub">${t('loginS')}</p>${prov.outerHTML}
    <div class="au-or"><span>${t('or')}</span></div>
    <form class="au-form" data-form="login" novalidate>${field('lemail',t('email'),'email',L.email,t('emailPh'),{ac:'email'})}
     ${field('lpass',t('pw'),L.show?'text':'password',L.password,t('pwPh'),{pw:1,shown:L.show,ac:'current-password'})}
@@ -2469,8 +2472,8 @@ const AU=(()=>{const $=id=>document.getElementById(id);
    <p class="au-terms">${t('terms',{terms:`<a href="#terms" target="_blank" rel="noopener">${t('termsL')}</a>`,privacy:`<a href="#privacy" target="_blank" rel="noopener">${t('privacyL')}</a>`})}</p></div>`}
  function tplSignup(){const sent=G.otp!=='idle',ver=G.otp==='verified';
   const codeBtn=ver?`<span class="au-badge ok">✓ ${t('verified')}</span>`:`<button type="button" class="au-inbtn" id="au-send" data-act="sendOtp">${sent?t('resend'):t('sendCode')}</button>`;
-  return `<div class="au-view" data-v="signup"><button class="au-link au-back" type="button" data-act="toLogin">${t('back')}</button>
-   <h2 id="au-title">${t('signupT')}</h2><p class="au-sub">${t('signupS')}</p>
+  return `<div class="au-view" data-v="signup">
+   <h1 id="au-title" class="au-h">${t('signupT')}</h1><p class="au-sub">${t('signupS')}</p>
    <form class="au-form" data-form="signup" novalidate>
     ${field('gemail',t('email'),'email',G.email,t('emailPh'),{ac:'email',btn:codeBtn})}${err('au-gsenderr',G.sendErr)}
     <div class="au-otp" id="au-otpbox"${sent&&!ver?'':' hidden'}><p class="au-hint">${t('sentTo',{email:esc(G.email)})}</p>
@@ -2491,9 +2494,9 @@ const AU=(()=>{const $=id=>document.getElementById(id);
    <div class="au-row"><button class="au-link" type="button" id="au-rresend" data-act="resendReset"></button><button class="au-link" type="button" data-act="diffEmail">${t('diffEmail')}</button></div></form>`;
   if(R.step==='newPassword')body=`<p class="au-sub">${t('r3')}</p><form class="au-form" data-form="r3" novalidate>${field('rpass',t('newPw'),R.show?'text':'password',R.password,t('pwNewPh'),{pw:1,shown:R.show,ac:'new-password'})}${checklist('au-rpol')}
    ${field('rconf',t('confirm'),R.show2?'text':'password',R.confirm,t('confirmPh'),{pw:1,shown:R.show2,ac:'new-password'})}${err('au-rmis','')}${err('au-rerr',R.err)}<button class="pill au-go" id="au-rgo" type="submit">${t('resetGo')}</button></form>`;
-  return `<div class="au-view" data-v="reset"><button class="au-link au-back" type="button" data-act="toLogin">${t('back')}</button><h2 id="au-title">${t('resetT')}</h2>${steps}${body}</div>`}
+  return `<div class="au-view" data-v="reset"><button class="au-link au-back" type="button" data-act="toLogin">${t('back')}</button><h1 id="au-title" class="au-h">${t('resetT')}</h1>${steps}${body}</div>`}
  function tplDone(kind){const w=kind==='welcome';
-  return `<div class="au-view au-done" data-v="done"><div class="au-okmark" aria-hidden="true">✓</div><h2 id="au-title">${w?t('welcomeT'):t('resetDoneT')}</h2>
+  return `<div class="au-view au-done" data-v="done"><div class="au-okmark" aria-hidden="true">✓</div><h1 id="au-title" class="au-h">${w?t('welcomeT'):t('resetDoneT')}</h1>
    <p class="au-sub">${w?t('welcomeS',{email:esc(doneEmail)}):t('resetDoneS')}</p><button class="pill au-go" type="button" data-act="finish">${w?t('welcomeGo'):t('resetDoneGo')}</button></div>`}
  function render(focus){const b=$('au-body');if(!b)return;
   b.innerHTML=view==='login'?tplLogin():view==='signup'?tplSignup():view==='reset'?tplReset():tplDone(view==='welcome'?'welcome':'reset');
