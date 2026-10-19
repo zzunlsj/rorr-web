@@ -2211,7 +2211,7 @@ function PB_NEXT(slug){const p=POSTS.find(x=>x.slug===slug);if(!p)return '';retu
 function PB_FB(){return '<div class="pfb"><div><b>Think the formula is wrong, or know a better way?</b><small>Researchers and analysts welcome.</small></div><a href="#contact" onclick="window.CT_PRE=\'metric\';nav(event,\'contact\')">Send LwRC+ feedback →</a></div>'}
 function renderPost(slug){const p=POSTS.find(x=>x.slug===slug)||POSTS[0];
  const body=p.body.map(([t,x])=>t==='eg'?PB_EG():t==='fx'?PB_FX(x):t==='next'?PB_NEXT(x):t==='fb'?PB_FB():t==='h'?`<h2>${x}</h2>`:t==='li'?`<li>${x}</li>`:t==='muse'?PB_MUSE():t==='boostui'?PB_BOOST():t==='moments'?PB_MOMENTS():t==='viz'?`<video class="viz" poster="assets/viz-${x}.jpg" autoplay muted loop playsinline><source src="assets/viz-${x}.mp4" type="video/mp4"><source src="assets/viz-${x}.webm" type="video/webm"></video>`:`<p>${x}</p>`).join('').replace(/(<li>.*?<\/li>)+/gs,m=>`<ul>${m}</ul>`);
- const more=POSTS.filter(x=>x!==p).slice(0,2);
+ const more=(()=>{const i=POSTS.indexOf(p),n=POSTS.length,ring=[];for(let k=1;k<n;k++)ring.push(POSTS[(i+k)%n]);return [...ring.filter(x=>x.tag===p.tag),...ring.filter(x=>x.tag!==p.tag)].slice(0,2)})();
  document.getElementById('post').innerHTML=`<a class="back2" href="#blog" onclick="nav(event,'blog')">← All posts</a><div class="pmeta"><span>${p.date}</span><span>${p.tag}</span><span>${p.min} min read</span></div><h1>${p.title}</h1><div class="by">RORR team</div><div class="pbody">${body}</div>
  <div class="pcta"><span>Try it on today's match</span><button class="pill" onclick="goHome(event);document.getElementById('q').focus()">Ask a question</button></div>
  <div class="more"><h3>More posts</h3>${more.map(postCard).join('')}</div>`}
