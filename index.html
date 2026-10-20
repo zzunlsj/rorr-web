@@ -1618,7 +1618,7 @@ body:not(.ip-open) .ipanel{box-shadow:none!important}
 .pm-tile{height:26px;width:65px;border-radius:6px;background:#fff;border:1px solid #E5E8EB;object-fit:contain;display:block}
 span.pm-tile{display:inline-flex;align-items:center;justify-content:center}span.pm-tile img{height:auto;width:54px}
 .prov.soon{padding:10px 14px}.prov.soon .pv-t{gap:8px}
-.tp-m .pm-tile{height:24px;width:60px}
+.pm-sq{width:28px;height:28px;display:block;flex:0 0 auto}.pm-sq.pm-w{background:#fff;border-radius:50%;padding:4px;box-sizing:border-box}.tp-m .pm-sq{width:26px;height:26px}
 @media (max-width:640px){.cur-seg button{min-width:0}.tu-buy .pill{width:100%}}
 </style>
 </head>
@@ -3340,9 +3340,9 @@ const HC=(()=>{const root=document.getElementById('hc');if(!root)return{render()
 const PAYUI=(()=>{const K='rorr-pay2';let st={opt:'toss-usd',pack:3};try{Object.assign(st,JSON.parse(localStorage.getItem(K)||'{}'))}catch(e){}
  const save=()=>{try{localStorage.setItem(K,JSON.stringify(st))}catch(e){}};
  // method tiles: rectangular icons from the RORR design system (Figma PaymentIcon), Toss Pay from the Toss brand kit
- const M={card:['Credit card','신용카드','assets/pay/m-card.png'],naverpay:['Naver Pay','네이버페이','assets/pay/m-naverpay.png'],kakaopay:['Kakao Pay','카카오페이','assets/pay/m-kakaopay.png'],
-  payco:['PAYCO','페이코','assets/pay/m-payco.png'],tosspay:['Toss Pay','토스페이','assets/pay/tosspay.png',1],paypal:['PayPal','PayPal','assets/pay/m-paypal.png']};
- const tile=k=>{const m=M[k],n=LX(m[0],m[1]);return m[3]?'<span class="pm-tile" title="'+n+'"><img src="'+m[2]+'" alt="'+n+'"></span>':'<img class="pm-tile" src="'+m[2]+'" alt="'+n+'" title="'+n+'">'};
+ const M={card:['Credit card','신용카드','assets/pay/s-card.png'],naverpay:['Naver Pay','네이버페이','assets/pay/s-naverpay.png'],kakaopay:['Kakao Pay','카카오페이','assets/pay/s-kakaopay.png'],
+  payco:['PAYCO','페이코','assets/pay/s-payco.png'],tosspay:['Toss Pay','토스페이','assets/pay/s-tosspay.png'],paypal:['PayPal','PayPal','assets/pay/s-paypal.png']};
+ const tile=k=>{const m=M[k],n=LX(m[0],m[1]);return '<img class="pm-sq'+(k==='paypal'?' pm-w':'')+'" src="'+m[2]+'" alt="'+n+'" title="'+n+'">'};
  const LOGO='<img class="pm-logo dk" src="assets/pay/tosspayments-w.png" alt="Toss Payments"><img class="pm-logo lt" src="assets/pay/tosspayments.png" alt="Toss Payments">';
  const OPTS=[{k:'toss-usd',prov:'Toss Payments',ko:'토스페이먼츠',cur:'USD',methods:['paypal']},{k:'toss-krw',prov:'Toss Payments',ko:'토스페이먼츠',cur:'KRW',methods:['card','naverpay','kakaopay','payco','tosspay']}];
  // main pack: $10 / ₩13,000 (1 USD = 1,300 KRW); base rate ⚡1 = $0.10 = ₩130; bigger packs add bonus Energy
