@@ -1527,6 +1527,18 @@ body:not(.ip-open) .ipanel{box-shadow:none!important}
 .pfb b{font-size:17px;display:block}.pfb small{font-size:13px;color:var(--mute)}
 .pfb a{display:inline-flex;align-items:center;height:44px;padding:0 20px;border-radius:12px;background:var(--ds-primary,#6F4CFF);color:#fff!important;font:800 14.5px "Pretendard Variable",sans-serif;text-decoration:none;white-space:nowrap}
 .eg-sc{overflow-x:auto;scrollbar-width:thin}
+/* light theme: stronger colors for formula cards and charts */
+:root[data-theme=light] .fx-m var,:root[data-theme=light] .fx-k,:root[data-theme=light] .fx-w4>.fx-k{color:#4B2FC9}
+:root[data-theme=light] .fx-wt{color:#4B2FC9;background:rgba(111,76,255,.12)}
+:root[data-theme=light] .fx3 .fx-c::before{background:#0E8F78}:root[data-theme=light] .fx3 .fx-c .fx-k{color:#0E8F78}
+:root[data-theme=light] .fx3 .fx-d::before{background:#4B2FC9}:root[data-theme=light] .fx3 .fx-d .fx-k{color:#4B2FC9}
+:root[data-theme=light] .fx3 .fx-r::before,:root[data-theme=light] .fx-rk::before{background:#D6264F}:root[data-theme=light] .fx3 .fx-r .fx-k,:root[data-theme=light] .fx-rk .fx-k{color:#D6264F}
+:root[data-theme=light] .pcl circle{fill:#6F4CFF}:root[data-theme=light] .pnext span.go{color:#4B2FC9}
+:root[data-theme=light] .eg .ln.us{stroke:#6F4CFF}:root[data-theme=light] .eg .ln.them{stroke:#D6264F}
+:root[data-theme=light] .eg .bd[fill="#9CA3F1"]{fill:#4B2FC9}:root[data-theme=light] .eg .bd[fill="#FE6B8B"]{fill:#D6264F}
+:root[data-theme=light] .eg-lg span:first-child i{background:#6F4CFF!important}:root[data-theme=light] .eg-lg span:last-child i{background:#D6264F!important}
+:root[data-theme=light] .eg-chips span.on{border-color:#6F4CFF}
+:root[data-theme=light] .eg-out .eg-p{color:#0E8F78}:root[data-theme=light] .eg-out .eg-n{color:#D6264F}
 .pbody h3.ph3{font-size:19px;margin:22px 0 10px;text-transform:none!important;letter-spacing:0}
 .fx-w4{margin:6px 0 16px}
 .fx-w4>.fx-k{display:inline-block;font:800 11.5px "Pretendard Variable",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#9CA3F1;margin-bottom:8px}
