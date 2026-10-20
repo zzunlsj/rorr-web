@@ -1618,7 +1618,10 @@ body:not(.ip-open) .ipanel{box-shadow:none!important}
 .pm-tile{height:26px;width:65px;border-radius:6px;background:#fff;border:1px solid #E5E8EB;object-fit:contain;display:block}
 span.pm-tile{display:inline-flex;align-items:center;justify-content:center}span.pm-tile img{height:auto;width:54px}
 .prov.soon{padding:10px 14px}.prov.soon .pv-t{gap:8px}
-.pm-sq{width:28px;height:28px;display:block;flex:0 0 auto}.pm-sq.pm-w{background:#fff;border-radius:50%;padding:4px;box-sizing:border-box}.tp-m .pm-sq{width:26px;height:26px}
+.pm-sq{width:28px;height:28px;display:block;flex:0 0 auto}
+.prov .pv-t{flex:1}.pv-cc{margin-left:auto;flex:0 0 auto;display:inline-flex;align-items:baseline;gap:6px;padding:8px 14px;border-radius:10px;border:1px solid var(--line);background:var(--bg2)}
+.pv-cc b{font:800 18px "Pretendard Variable",sans-serif;letter-spacing:.02em;color:var(--ink)}.pv-cc small{font:700 14px "Pretendard Variable",sans-serif;color:var(--mute)}
+.prov.on .pv-cc{border-color:var(--ds-primary,#6F4CFF);background:color-mix(in srgb,var(--ds-primary,#6F4CFF) 16%,transparent)}.pm-sq.pm-w{background:#fff;border-radius:50%;padding:4px;box-sizing:border-box}.tp-m .pm-sq{width:26px;height:26px}
 @media (max-width:640px){.cur-seg button{min-width:0}.tu-buy .pill{width:100%}}
 </style>
 </head>
@@ -3356,7 +3359,7 @@ const PAYUI=(()=>{const K='rorr-pay2';let st={opt:'toss-usd',pack:3};try{Object.
   '<div class="n">⚡ '+p.n.toLocaleString('en-US')+(p.b?'<span class="bn">+'+p.b+' '+LX('bonus','보너스')+'</span>':'')+'</div><div class="pr">'+price(p)+'</div>'+
   (p.b?'<div class="tot">'+LX(t.toLocaleString('en-US')+' in total','총 '+t.toLocaleString('en-US'))+'</div>':'')+'<div class="unit">'+unit(p)+'</div></button>'}
  function render(){
-  const pl=$('prov-list');if(pl)pl.innerHTML=OPTS.map(o=>'<button type="button" role="radio" class="prov'+(o.k===st.opt?' on':'')+'" aria-checked="'+(o.k===st.opt)+'" data-opt="'+o.k+'"><span class="rd"></span><span class="pv-t"><span class="pv-h">'+LOGO+'<span class="pv-cur">'+o.cur+'</span></span><span class="pv-ms">'+o.methods.map(tile).join('')+'</span></span></button>').join('')+
+  const pl=$('prov-list');if(pl)pl.innerHTML=OPTS.map(o=>'<button type="button" role="radio" class="prov'+(o.k===st.opt?' on':'')+'" aria-checked="'+(o.k===st.opt)+'" data-opt="'+o.k+'"><span class="rd"></span><span class="pv-t"><span class="pv-h">'+LOGO+'</span><span class="pv-ms">'+o.methods.map(tile).join('')+'</span></span><span class="pv-cc"><b>'+o.cur+'</b><small>'+(o.cur==='USD'?'$':'₩')+'</small></span></button>').join('')+
    '<div class="prov soon" aria-disabled="true"><span class="rd"></span><span class="pv-t"><b>'+LX('More methods coming','결제 수단 추가 예정')+'</b></span></div>';
   const pr=$('packrow');if(pr)pr.innerHTML=PACKS.map(packHTML).join('');
   const p=PACKS[st.pack]||PACKS[3],t=p.n+p.b,o=opt();
