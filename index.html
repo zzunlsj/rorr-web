@@ -1628,7 +1628,7 @@ span.pm-tile{display:inline-flex;align-items:center;justify-content:center}span.
 /* ===== Energy logo (Figma LogoLightening) + Energy page top (2026-10-21) ===== */
 .en-ic{display:inline-block;width:.78em;height:1.06em;vertical-align:-.17em;background:url(assets/energy.svg) center/contain no-repeat;flex:0 0 auto}
 .energy .eb .en-ic,.pop .bal .en-ic{margin-right:2px}
-.en-top{display:grid;grid-template-columns:1.1fr 1fr 1.3fr;gap:0;padding:0!important;overflow:hidden}
+.en-top{display:grid;grid-template-columns:1fr;gap:0;padding:0!important;overflow:hidden}
 .en-top>div{padding:18px 20px;display:grid;align-content:start;gap:6px}
 .en-top>div+div{border-left:1px solid var(--line)}
 .en-l{font:800 11.5px "Pretendard Variable",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
@@ -1783,8 +1783,6 @@ span.pm-tile{display:inline-flex;align-items:center;justify-content:center}span.
    <h2>Energy</h2><p class="lead">Energy is RORR's paid points. Use it to Boost players and teams, and to ask your own questions.</p>
    <div class="box en-top">
     <div class="en-bal"><span class="en-l">Balance</span><div class="en-v"><i class="en-ic" aria-hidden="true"></i><b class="eb4">120</b></div><small>Ready to use</small></div>
-    <div class="en-stats"><div><span class="en-l">Used</span><b id="en-used">0</b></div><div><span class="en-l">Topped up</span><b id="en-in">0</b></div><small>From your history below</small></div>
-    <div class="en-cost"><span class="en-l">Costs</span><ul><li><span>Boost a player or team</span><b>⚡ 10+</b></li><li><span>Your own question</span><b>⚡ 1</b></li><li><span>Muse items</span><b class="soon-b">Soon</b></li></ul></div>
    </div>
    <div class="box"><h4>TOP UP</h4>
     <ol class="tu-steps"><li><b>1</b>Choose a pack</li><li><b>2</b>Pay</li><li><b>3</b>Energy added</li></ol>
@@ -3409,10 +3407,6 @@ const PAYUI=(()=>{const K='rorr-pay2';let st={opt:'toss-usd',pack:3};try{Object.
 (function(){var R=/⚡/;function fix(root){var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),hits=[],n;while(n=w.nextNode()){var p=n.parentElement;if(R.test(n.nodeValue)&&p&&!p.closest('script,style,textarea,title,option,.en-ic'))hits.push(n)}
  hits.forEach(function(t){var f=document.createDocumentFragment();t.nodeValue.split(/(⚡\s?)/).forEach(function(s){if(!s)return;if(R.test(s)){var e=document.createElement('i');e.className='en-ic';e.setAttribute('role','img');e.setAttribute('aria-label','Energy');f.appendChild(e);if(/\s$/.test(s))f.appendChild(document.createTextNode(' '))}else f.appendChild(document.createTextNode(s))});t.parentNode.replaceChild(f,t)})}
  var q=0;function run(){q=0;fix(document.body)}new MutationObserver(function(){if(!q)q=setTimeout(run,0)}).observe(document.body,{childList:true,subtree:true,characterData:true});run()})();
-/* Energy page: used / topped up totals from the history table */
-(function(){function stats(){var t=document.getElementById('usage');if(!t)return;var u=0,inn=0;t.querySelectorAll('td.r').forEach(function(td){var v=parseInt(td.textContent.replace(/[^0-9+\-−]/g,'').replace('−','-'),10);if(isNaN(v))return;if(v<0)u+=-v;else inn+=v});
- var a=document.getElementById('en-used'),b=document.getElementById('en-in');if(a)a.textContent='⚡ '+u.toLocaleString('en-US');if(b)b.textContent='⚡ '+inn.toLocaleString('en-US')}
- var t=document.getElementById('usage');if(t)new MutationObserver(stats).observe(t,{childList:true,subtree:true});stats()})();
 </script>
 </body>
 </html>
