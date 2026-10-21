@@ -1628,8 +1628,9 @@ span.pm-tile{display:inline-flex;align-items:center;justify-content:center}span.
 </style>
 <style id="energy-ui">
 /* ===== ENERGY logo (Figma LogoLightening) + ENERGY page top (2026-10-21) ===== */
-.en-ic{display:inline-block;width:.78em;height:1.06em;vertical-align:-.17em;background:url(assets/energy.svg) center/contain no-repeat;flex:0 0 auto}
-.energy .eb .en-ic,.pop .bal .en-ic{margin-right:2px}
+.en-ic{display:inline-block;width:.59em;height:.78em;vertical-align:-.03em;margin:0 .06em;}
+.en-ic.g{margin-right:.28em}.en-ic.fx{margin:0}
+.en-ic{background:url(assets/energy.svg) center/contain no-repeat;flex:0 0 auto}
 .en-top{display:grid;grid-template-columns:1fr;gap:0;padding:0!important;overflow:hidden}
 .en-top>div{padding:18px 20px;display:grid;align-content:start;gap:6px}
 .en-top>div+div{border-left:1px solid var(--line)}
@@ -3407,7 +3408,7 @@ const PAYUI=(()=>{const K='rorr-pay2';let st={opt:'toss-usd',pack:3};try{Object.
 <script>
 /* ENERGY logo: every ⚡ in the page text becomes the Figma ENERGY mark (keeps text content for copy/aria) */
 (function(){var R=/⚡/;function fix(root){var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),hits=[],n;while(n=w.nextNode()){var p=n.parentElement;if(R.test(n.nodeValue)&&p&&!p.closest('script,style,textarea,title,option,.en-ic'))hits.push(n)}
- hits.forEach(function(t){var f=document.createDocumentFragment();t.nodeValue.split(/(⚡\s?)/).forEach(function(s){if(!s)return;if(R.test(s)){var e=document.createElement('i');e.className='en-ic';e.setAttribute('role','img');e.setAttribute('aria-label','ENERGY');f.appendChild(e);if(/\s$/.test(s))f.appendChild(document.createTextNode(' '))}else f.appendChild(document.createTextNode(s))});t.parentNode.replaceChild(f,t)})}
+ hits.forEach(function(t){var f=document.createDocumentFragment();t.nodeValue.split(/(⚡\s?)/).forEach(function(s){if(!s)return;if(R.test(s)){var e=document.createElement('i');e.className='en-ic';e.setAttribute('role','img');e.setAttribute('aria-label','ENERGY');if(/\s$/.test(s))e.className+=' g';f.appendChild(e)}else f.appendChild(document.createTextNode(s))});var fx=/flex|grid/.test(getComputedStyle(t.parentNode).display);if(fx)f.querySelectorAll('.en-ic').forEach(function(x){x.classList.add('fx')});t.parentNode.replaceChild(f,t)})}
  var q=0;function run(){q=0;fix(document.body)}new MutationObserver(function(){if(!q)q=setTimeout(run,0)}).observe(document.body,{childList:true,subtree:true,characterData:true});run()})();
 </script>
 <script>
