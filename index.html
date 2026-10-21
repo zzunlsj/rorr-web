@@ -3363,8 +3363,8 @@ const PAYUI=(()=>{const K='rorr-pay2';let st={opt:'toss-usd',pack:3};try{Object.
  const save=()=>{try{localStorage.setItem(K,JSON.stringify(st))}catch(e){}};
  // method tiles: rectangular icons from the RORR design system (Figma PaymentIcon), Toss Pay from the Toss brand kit
  const M={card:['Credit card','신용카드','assets/pay/s-card.png'],naverpay:['Naver Pay','네이버페이','assets/pay/s-naverpay.png'],kakaopay:['Kakao Pay','카카오페이','assets/pay/s-kakaopay.png'],
-  payco:['PAYCO','페이코','assets/pay/s-payco.png'],tosspay:['Toss Pay','토스페이','assets/pay/s-tosspay.png'],paypal:['PayPal','PayPal','assets/pay/s-paypal.png']};
- const tile=k=>{const m=M[k],n=LX(m[0],m[1]);return '<img class="pm-sq'+(k==='paypal'?' pm-w':'')+'" src="'+m[2]+'" alt="'+n+'" title="'+n+'">'};
+  payco:['PAYCO','페이코','assets/pay/s-payco.png'],tosspay:['Toss Pay','토스페이','assets/pay/s-tosspay.png?v=2'],paypal:['PayPal','PayPal','assets/pay/s-paypal.png?v=2']};
+ const tile=k=>{const m=M[k],n=LX(m[0],m[1]);return '<img class="pm-sq" src="'+m[2]+'" alt="'+n+'" title="'+n+'">'};
  const LOGO='<img class="pm-logo dk" src="assets/pay/tosspayments-w.png" alt="Toss Payments"><img class="pm-logo lt" src="assets/pay/tosspayments.png" alt="Toss Payments">';
  const OPTS=[{k:'toss-usd',prov:'Toss Payments',ko:'토스페이먼츠',cur:'USD',methods:['paypal']},{k:'toss-krw',prov:'Toss Payments',ko:'토스페이먼츠',cur:'KRW',methods:['card','naverpay','kakaopay','payco','tosspay']}];
  // main pack: $10 / ₩13,000 (1 USD = 1,300 KRW); base rate ⚡1 = $0.10 = ₩130; bigger packs add bonus ENERGY
