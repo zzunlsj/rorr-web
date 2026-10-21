@@ -3363,9 +3363,9 @@ const PAYUI=(()=>{const K='rorr-pay2';let st={opt:'toss-usd',pack:3};try{Object.
  const save=()=>{try{localStorage.setItem(K,JSON.stringify(st))}catch(e){}};
  // method tiles: rectangular icons from the RORR design system (Figma PaymentIcon), Toss Pay from the Toss brand kit
  const M={card:['Credit card','신용카드','assets/pay/s-card.png'],naverpay:['Naver Pay','네이버페이','assets/pay/s-naverpay.png'],kakaopay:['Kakao Pay','카카오페이','assets/pay/s-kakaopay.png'],
-  payco:['PAYCO','페이코','assets/pay/s-payco.png'],tosspay:['Toss Pay','토스페이','assets/pay/s-tosspay.png?v=2'],paypal:['PayPal','PayPal','assets/pay/s-paypal.png?v=2']};
- const tile=k=>{const m=M[k],n=LX(m[0],m[1]);return '<img class="pm-sq" src="'+m[2]+'" alt="'+n+'" title="'+n+'">'};
- const LOGO='<img class="pm-logo dk" src="assets/pay/tosspayments-w.png" alt="Toss Payments"><img class="pm-logo lt" src="assets/pay/tosspayments.png" alt="Toss Payments">';
+  payco:['PAYCO','페이코','assets/pay/s-payco.png'],tosspay:['Toss Pay','토스페이','assets/pay/s-tosspay.png?v=3'],paypal:['PayPal','PayPal','assets/pay/s-paypal.png?v=3']};
+ const tile=k=>{const m=M[k],n=LX(m[0],m[1]);return '<img class="pm-sq'+(k==='paypal'?' pm-w':'')+'" src="'+m[2]+'" alt="'+n+'" title="'+n+'">'};
+ const LOGO='<img class="pm-logo dk" src="assets/pay/tosspayments-short-w.png" alt="Toss Payments"><img class="pm-logo lt" src="assets/pay/tosspayments-short.png" alt="Toss Payments">';
  const OPTS=[{k:'toss-usd',prov:'Toss Payments',ko:'토스페이먼츠',cur:'USD',methods:['paypal']},{k:'toss-krw',prov:'Toss Payments',ko:'토스페이먼츠',cur:'KRW',methods:['card','naverpay','kakaopay','payco','tosspay']}];
  // main pack: $10 / ₩13,000 (1 USD = 1,300 KRW); base rate ⚡1 = $0.10 = ₩130; bigger packs add bonus ENERGY
  const PACKS=[{n:10,b:0,usd:1,krw:1300},{n:30,b:0,usd:3,krw:3900},{n:50,b:2,usd:5,krw:6500},{n:100,b:10,usd:10,krw:13000,top:1},{n:500,b:75,usd:50,krw:65000},{n:1000,b:200,usd:100,krw:130000}];
@@ -3390,7 +3390,7 @@ const PAYUI=(()=>{const K='rorr-pay2';let st={opt:'toss-usd',pack:3};try{Object.
  // checkout (provider UI, demo)
  function checkout(i){const p=PACKS[i],t=p.n+p.b,o=opt();let m=0;
   let ov=$('tp-ov');if(!ov){ov=document.createElement('div');ov.id='tp-ov';ov.className='tp-ov';ov.setAttribute('role','dialog');ov.setAttribute('aria-modal','true');document.body.appendChild(ov)}
-  const draw=()=>{ov.innerHTML='<div class="tp"><div class="tp-hd"><img src="assets/pay/tosspayments.png" alt="Toss Payments"><button class="tp-x" type="button" aria-label="Close">×</button></div><div class="tp-bd">'+
+  const draw=()=>{ov.innerHTML='<div class="tp"><div class="tp-hd"><img src="assets/pay/tosspayments-short.png" alt="Toss Payments"><button class="tp-x" type="button" aria-label="Close">×</button></div><div class="tp-bd">'+
    '<div class="tp-ord"><div><small>RORR · ENERGY</small><b>⚡ '+t.toLocaleString('en-US')+(p.b?' ('+p.n+' + '+p.b+')':'')+'</b></div><div class="tp-amt">'+price(p)+'</div></div>'+
    '<div class="tp-ms">'+o.methods.map((x,k)=>'<button type="button" class="tp-m'+(k===m?' on':'')+'" data-tpm="'+k+'"><span class="rd"></span>'+tile(x)+'<span>'+LX(M[x][0],M[x][1])+'</span></button>').join('')+'</div>'+
    '<button class="tp-pay" type="button">'+LX('Pay '+price(p),price(p)+' 결제')+'</button><p class="tp-fine">'+LX('Demo · no real charge','데모 · 실제 결제 없음')+'</p></div></div>'};
