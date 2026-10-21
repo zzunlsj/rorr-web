@@ -1578,6 +1578,7 @@ body:not(.ip-open) .ipanel{box-shadow:none!important}
 .pk .tot{font-size:13px;color:var(--mute)}
 .pk .unit{font-size:12.5px;color:var(--mute);border-top:1px dashed var(--line);padding-top:6px;margin-top:4px}
 .pk .badge{position:static;justify-self:start;margin-bottom:2px}
+.pk .badge.ph{visibility:hidden}.pk .n{min-height:34px;align-items:center}
 .tu-buy{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:14px;padding:14px 16px;border-radius:14px;border:1px solid var(--line);background:var(--bg)}
 .tu-sum{font-size:15px}.tu-sum b{font-size:17px}
 .tu-cur{font-size:13.5px;color:var(--mute);margin:10px 0 0}
@@ -3366,15 +3367,15 @@ const PAYUI=(()=>{const K='rorr-pay2';let st={opt:'toss-usd',pack:3};try{Object.
  const LOGO='<img class="pm-logo dk" src="assets/pay/tosspayments-w.png" alt="Toss Payments"><img class="pm-logo lt" src="assets/pay/tosspayments.png" alt="Toss Payments">';
  const OPTS=[{k:'toss-usd',prov:'Toss Payments',ko:'토스페이먼츠',cur:'USD',methods:['paypal']},{k:'toss-krw',prov:'Toss Payments',ko:'토스페이먼츠',cur:'KRW',methods:['card','naverpay','kakaopay','payco','tosspay']}];
  // main pack: $10 / ₩13,000 (1 USD = 1,300 KRW); base rate ⚡1 = $0.10 = ₩130; bigger packs add bonus ENERGY
- const PACKS=[{n:10,b:0,usd:1,krw:1300},{n:30,b:0,usd:3,krw:3900},{n:50,b:2,usd:5,krw:6500},{n:100,b:10,usd:10,krw:13000,top:1},{n:300,b:45,usd:30,krw:39000},{n:500,b:100,usd:50,krw:65000}];
+ const PACKS=[{n:10,b:0,usd:1,krw:1300},{n:30,b:0,usd:3,krw:3900},{n:50,b:2,usd:5,krw:6500},{n:100,b:10,usd:10,krw:13000,top:1},{n:500,b:75,usd:50,krw:65000},{n:1000,b:200,usd:100,krw:130000}];
  const opt=()=>OPTS.find(o=>o.k===st.opt)||OPTS[0];
  const pname=o=>LX(o.prov,o.ko)+' · '+o.cur;
  const price=(p,c=opt().cur)=>c==='USD'?'$'+p.usd.toFixed(2):'₩'+p.krw.toLocaleString('en-US');
  const unit=(p,c=opt().cur)=>{const t=p.n+p.b;return (c==='USD'?'$'+(p.usd/t).toFixed(3):'₩'+Math.round(p.krw/t).toLocaleString('en-US'))+'/⚡'};
  const $=id=>document.getElementById(id);
- function packHTML(p,i){const t=p.n+p.b;return '<button type="button" role="radio" class="pk'+(i===st.pack?' on':'')+'" aria-checked="'+(i===st.pack)+'" data-pk="'+i+'">'+(p.top?'<span class="badge">'+LX('Most popular','인기')+'</span>':'')+
+ function packHTML(p,i){const t=p.n+p.b;return '<button type="button" role="radio" class="pk'+(i===st.pack?' on':'')+'" aria-checked="'+(i===st.pack)+'" data-pk="'+i+'">'+(p.top?'<span class="badge">'+LX('Most popular','인기')+'</span>':'<span class="badge ph" aria-hidden="true">&nbsp;</span>')+
   '<div class="n">⚡ '+p.n.toLocaleString('en-US')+(p.b?'<span class="bn">+'+p.b+' '+LX('bonus','보너스')+'</span>':'')+'</div><div class="pr">'+price(p)+'</div>'+
-  (p.b?'<div class="tot">'+LX(t.toLocaleString('en-US')+' in total','총 '+t.toLocaleString('en-US'))+'</div>':'')+'<div class="unit">'+unit(p)+'</div></button>'}
+  '<div class="tot">'+LX(t.toLocaleString('en-US')+' in total','총 '+t.toLocaleString('en-US'))+'</div>'+'<div class="unit">'+unit(p)+'</div></button>'}
  function render(){
   const pl=$('prov-list');if(pl)pl.innerHTML=OPTS.map(o=>'<button type="button" role="radio" class="prov'+(o.k===st.opt?' on':'')+'" aria-checked="'+(o.k===st.opt)+'" data-opt="'+o.k+'"><span class="rd"></span><span class="pv-t"><span class="pv-h">'+LOGO+'</span><span class="pv-ms">'+o.methods.map(tile).join('')+'</span></span><span class="pv-cc"><b>'+o.cur+'</b><small>'+(o.cur==='USD'?'$':'₩')+'</small></span></button>').join('')+
    '<div class="prov soon" aria-disabled="true"><span class="rd"></span><span class="pv-t"><b>'+LX('More methods coming','결제 수단 추가 예정')+'</b></span></div>';
