@@ -1690,7 +1690,7 @@ body.pagev .notice,body.acct .notice{display:block}
 body.pagev .adtop,body.acct .adtop{display:block}
 body.pagev header,body.acct header{top:var(--hdr-top,0px)!important}
 /* Home: header also fixed under the notice + ad bars, sticks to the top once they scroll away */
-body:not(.pagev):not(.acct):not(.chatting):not(.teamv) header{position:fixed!important;left:0;right:0;top:var(--hdr-top,0px)!important}
+body:not(.pagev):not(.acct):not(.chatting):not(.teamv) header{position:fixed!important;left:0;right:0;top:var(--hdr-top,0px)!important;transform:none!important}
 body:not(.pagev):not(.acct):not(.chatting):not(.teamv) .ticker{margin-top:69px}
 body.pagev .siderail,body.acct .siderail{top:calc(var(--hdr-top,0px) + 150px)!important}
 </style>
