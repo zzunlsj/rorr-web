@@ -23,7 +23,7 @@ body.chatting .alt,body.acct .alt,body.teamv .alt{display:none}
 
 /* ===== role pages (creators / teams) ===== */
 .rpage{display:none}
-body.pagev main,body.pagev .notice,body.pagev .stage .hero,body.pagev .stage .scene,body.pagev .stage .ctrl,body.pagev .alt,body.pagev .dock{display:none}
+body.pagev main,body.pagev .stage .hero,body.pagev .stage .scene,body.pagev .stage .ctrl,body.pagev .alt,body.pagev .dock{display:none}
 body.pagev .stage{margin:0;border:0;border-radius:0;background:none;overflow:visible}body.pagev .stage::before{display:none}
 body.pagev header{transform:none;position:fixed;left:0;right:0;top:0}
 body.pagev .rpage.on{display:block}
@@ -216,7 +216,7 @@ header{background:var(--bg)!important;border-bottom:1px solid var(--line)}
 .blogs #bl a{display:block;padding:11px 16px;border-bottom:1px solid var(--line);text-decoration:none;font-size:14px}
 .blogs #bl a:last-child{border-bottom:0}.blogs #bl a span{display:block;font:500 11px "Pretendard Variable",monospace;color:var(--mute);margin-bottom:2px}
 body:not(.chatting) .dock{display:none!important}
-body.pagev .portal,body.pagev .adtop,body.chatting .portal,body.chatting .adtop,body.acct .portal,body.acct .adtop{display:none}
+body.pagev .portal,body.chatting .portal,body.chatting .adtop,body.acct .portal{display:none}
 @media (max-width:1100px){.portal{grid-template-columns:1fr 1fr}.pside{grid-column:1/-1;grid-template-columns:repeat(3,1fr)}}
 @media (max-width:760px){.portal{grid-template-columns:1fr}.pside{grid-template-columns:1fr;order:-1}.pside .blogs{display:none}.adt{font-size:13px}.adin{flex-wrap:wrap}.tb .nm span{display:none}}
 
@@ -629,7 +629,7 @@ body.pagev .lgbar,body.acct .lgbar{display:none}
 .ra-b .pill{display:block;text-align:center;font-size:11.5px;padding:9px 6px}
 @media (min-width:1520px){body.pagev .siderail,body.acct .siderail{display:block;position:fixed;top:120px;z-index:20}.siderail.l{left:calc(50% - 760px)}.siderail.r{right:calc(50% - 760px)}}
 
-@media (max-height:620px){.siderail{display:none!important}}
+@media (max-height:690px){.siderail{display:none!important}}
 @media (min-width:1520px){body.pagev .rhero{margin-left:calc(50% - 570px)!important;margin-right:calc(50% - 570px)!important}}
 
 /* ===== LwRC+ explainer bubble ===== */
@@ -1684,6 +1684,12 @@ span.pm-tile{display:inline-flex;align-items:center;justify-content:center}span.
 .tp-demo button{border:1px solid #E5E8EB;background:#fff;color:#4E5968;border-radius:999px;padding:3px 9px;font:600 11.5px "Pretendard Variable",sans-serif;cursor:pointer}
 .tp-demo button.on{border-color:#3182F6;color:#3182F6}
 @media (prefers-reduced-motion:reduce){.pay-ic.spin{animation-duration:2.4s}}
+</style>
+<style id="topbars-all">
+body.pagev .notice,body.acct .notice{display:block}
+body.pagev .adtop,body.acct .adtop{display:block}
+body.pagev header,body.acct header{top:var(--hdr-top,0px)!important}
+body.pagev .siderail,body.acct .siderail{top:calc(var(--hdr-top,0px) + 150px)!important}
 </style>
 </head>
 <body>
@@ -3507,6 +3513,14 @@ const PAY=(()=>{const $=id=>document.getElementById(id);const KP='rorr-pay-pendi
  return{start,show}})();
 /* deep link (Toss redirect) may arrive before this script loads */
 if(location.hash.indexOf("#payment/")===0)setTimeout(()=>route_(location.hash.slice(1)),0);
+</script>
+<script>
+/* fixed header on sub/account pages sits below the notice + ad bars until they scroll away */
+(function(){var n=document.querySelector('.notice'),a=document.querySelector('.adtop'),r=document.documentElement,q=0;
+ function upd(){q=0;var b=document.body;if(!(b.classList.contains('pagev')||b.classList.contains('acct'))){r.style.removeProperty('--hdr-top');return}
+  var h=(n?n.offsetHeight:0)+(a?a.offsetHeight:0);r.style.setProperty('--hdr-top',Math.max(0,h-scrollY)+'px')}
+ function sch(){if(!q)q=setTimeout(upd,0)}
+ addEventListener('scroll',sch,{passive:true});addEventListener('resize',sch);new MutationObserver(sch).observe(document.body,{attributes:true,attributeFilter:['class']});upd()})();
 </script>
 </body>
 </html>
