@@ -1689,6 +1689,9 @@ span.pm-tile{display:inline-flex;align-items:center;justify-content:center}span.
 body.pagev .notice,body.acct .notice{display:block}
 body.pagev .adtop,body.acct .adtop{display:block}
 body.pagev header,body.acct header{top:var(--hdr-top,0px)!important}
+/* Home: header also fixed under the notice + ad bars, sticks to the top once they scroll away */
+body:not(.pagev):not(.acct):not(.chatting):not(.teamv) header{position:fixed!important;left:0;right:0;top:var(--hdr-top,0px)!important}
+body:not(.pagev):not(.acct):not(.chatting):not(.teamv) .ticker{margin-top:69px}
 body.pagev .siderail,body.acct .siderail{top:calc(var(--hdr-top,0px) + 150px)!important}
 </style>
 </head>
@@ -3517,7 +3520,7 @@ if(location.hash.indexOf("#payment/")===0)setTimeout(()=>route_(location.hash.sl
 <script>
 /* fixed header on sub/account pages sits below the notice + ad bars until they scroll away */
 (function(){var n=document.querySelector('.notice'),a=document.querySelector('.adtop'),r=document.documentElement,q=0;
- function upd(){q=0;var b=document.body;if(!(b.classList.contains('pagev')||b.classList.contains('acct'))){r.style.removeProperty('--hdr-top');return}
+ function upd(){q=0;var b=document.body;if(b.classList.contains('chatting')){r.style.removeProperty('--hdr-top');return}
   var h=(n?n.offsetHeight:0)+(a?a.offsetHeight:0);r.style.setProperty('--hdr-top',Math.max(0,h-scrollY)+'px')}
  function sch(){if(!q)q=setTimeout(upd,0)}
  addEventListener('scroll',sch,{passive:true});addEventListener('resize',sch);new MutationObserver(sch).observe(document.body,{attributes:true,attributeFilter:['class']});upd()})();
