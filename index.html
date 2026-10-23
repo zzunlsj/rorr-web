@@ -1659,6 +1659,30 @@ span.pm-tile{display:inline-flex;align-items:center;justify-content:center}span.
 @keyframes pmBub{0%{opacity:0;transform:translateY(6px) scale(.85)}70%{opacity:1;transform:translateY(0) scale(1.05)}100%{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.promo.go .pm-fx polygon,.promo.go .pm-bub{animation:none;opacity:1}}
 </style>
+<style id="pay-result">
+/* ===== payment result pages (#payment/success, #payment/fail) ===== */
+.pay-wrap{display:grid;place-items:start center;padding-block:72px 96px}
+.pay-card{width:min(460px,100%);box-sizing:border-box;border:1px solid var(--line);border-radius:18px;background:var(--bg2);padding:32px 28px;display:grid;gap:14px;text-align:center;box-shadow:var(--sh-float)}
+.pay-ic{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;justify-self:center;font:800 26px "Pretendard Variable",sans-serif}
+.pay-ic.spin{border:4px solid color-mix(in srgb,var(--ds-primary,#6F4CFF) 25%,transparent);border-top-color:var(--ds-primary,#6F4CFF);animation:paySpin .9s linear infinite;width:48px;height:48px}
+.pay-ic.err{background:color-mix(in srgb,#FE6B8B 16%,transparent);color:#FE6B8B}
+.pay-ic.warn{background:color-mix(in srgb,#F2C766 18%,transparent);color:#F2C766}
+:root[data-theme=light] .pay-ic.err{color:#D6264F}:root[data-theme=light] .pay-ic.warn{color:#A8782A}
+@keyframes paySpin{to{transform:rotate(360deg)}}
+#pay-card h1{font:800 24px/1.25 "Pretendard Variable",sans-serif!important;letter-spacing:-.01em!important;text-transform:none!important;margin:0;text-wrap:balance}
+.pay-card p{margin:0;color:var(--mute);font-size:14.5px;line-height:1.55}
+.pay-sum{display:grid;gap:6px;margin:4px 0 0;padding:14px 16px;border-radius:12px;background:var(--bg);border:1px solid var(--line);text-align:left}
+.pay-sum div{display:flex;justify-content:space-between;gap:12px;font-size:13.5px}
+.pay-sum dt{color:var(--mute)}.pay-sum dd{margin:0;font-weight:700;font-variant-numeric:tabular-nums;word-break:break-all;text-align:right}
+.pay-act{display:grid;gap:10px;margin-top:6px}
+.pay-act .pill{justify-content:center;text-align:center}
+.pay-act .lnk{font-size:13.5px;color:var(--mute)}
+.pay-act .lnk a{color:var(--ink)}
+.tp-demo{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:10px;font-size:11.5px;color:#8B95A1}
+.tp-demo button{border:1px solid #E5E8EB;background:#fff;color:#4E5968;border-radius:999px;padding:3px 9px;font:600 11.5px "Pretendard Variable",sans-serif;cursor:pointer}
+.tp-demo button.on{border-color:#3182F6;color:#3182F6}
+@media (prefers-reduced-motion:reduce){.pay-ic.spin{animation-duration:2.4s}}
+</style>
 </head>
 <body>
 <div class="notice">RORR is a service of Pitch Interactive Inc. · Not operated by Riot Games.</div>
@@ -1952,6 +1976,9 @@ span.pm-tile{display:inline-flex;align-items:center;justify-content:center}span.
 <div class="rpage" id="pg-post" data-r="post">
  <article class="post wrap" id="post"></article>
 </div>
+<div class="rpage" id="pg-pay" data-r="pay">
+ <div class="wrap pay-wrap"><section class="pay-card" id="pay-card" aria-live="polite"></section></div>
+</div>
 <div class="rpage" id="pg-legal" data-r="legal">
  <article class="post wrap legal" id="legal"></article>
 </div>
@@ -2195,6 +2222,7 @@ function route_(r){const b=document.body;if(typeof MD!=='undefined'){if(r==='mus
  if(r==='contact'){b.classList.remove('chatting');b.classList.add('pagev');CT.show();document.getElementById('pg-contact').classList.add('on');hdr.classList.add('solid');scrollTo(0,0);clearInterval(timer);return}
  if(r==='about'){b.classList.remove('chatting');b.classList.add('pagev');document.getElementById('pg-about').classList.add('on');hdr.classList.add('solid');scrollTo(0,0);clearInterval(timer);return}
  if(r==='login'||r==='signup'||r==='forgot-password'){b.classList.remove('chatting');b.classList.add('pagev');document.getElementById('pg-auth').classList.add('on');AU.show(r);hdr.classList.add('solid');scrollTo(0,0);clearInterval(timer);return}
+ if(r.startsWith('payment/success')||r.startsWith('payment/fail')){b.classList.remove('chatting');b.classList.add('pagev');document.getElementById('pg-pay').classList.add('on');PAY.show(r);hdr.classList.add('solid');scrollTo(0,0);clearInterval(timer);return}
  if(r==='terms'||r==='privacy'){b.classList.remove('chatting');b.classList.add('pagev');LEGAL.render(r);document.getElementById('pg-legal').classList.add('on');hdr.classList.add('solid');scrollTo(0,0);clearInterval(timer);return}
  if(r==='wge')r='wrc';
  if(r==='wrc'){b.classList.remove('chatting');b.classList.add('pagev');document.getElementById('wf-lg').value=LG;wgRender();document.getElementById('pg-wge').classList.add('on');hdr.classList.add('solid');scrollTo(0,0);clearInterval(timer);return}
@@ -3183,7 +3211,7 @@ const MD=(()=>{const $=id=>document.getElementById(id);let tids=[],fav=null,opp=
 function openMuse(e){e&&e.preventDefault&&e.preventDefault();MD.open()}
 
 /* deep links: run after the whole script so every top-level const (hdr, LANG, ...) exists */
-setTimeout(()=>{const h=location.hash.slice(1);if(h==='muse'){MD.open(true);return}if(/^(player|team|compare)\//.test(h))openEntity(h,true);else if(/^(wrc|wge|blog|about|match|contact)/.test(h))route_(h)},0);
+setTimeout(()=>{const h=location.hash.slice(1);if(h==='muse'){MD.open(true);return}if(/^(player|team|compare)\//.test(h))openEntity(h,true);else if(/^(wrc|wge|blog|about|match|contact|payment\/)/.test(h))route_(h)},0);
 
 /* ===== side rails + LwRC+ bubble ===== */
 
@@ -3401,15 +3429,18 @@ const PAYUI=(()=>{const K='rorr-pay2';let st={opt:'toss-usd',pack:3};try{Object.
   const pp=$('pop-packs');if(pp)pp.innerHTML=PACKS.map((x,i)=>'<button class="pack" type="button" data-popk="'+i+'"><b>⚡ '+(x.n+x.b).toLocaleString('en-US')+'</b><span>'+price(x)+'<small class="unit">'+(x.b?'+'+x.b+' · ':'')+unit(x)+'</small></span></button>').join('');
   const pv=$('pop-prov');if(pv)pv.textContent=pname(o)}
  // checkout (provider UI, demo)
- function checkout(i){const p=PACKS[i],t=p.n+p.b,o=opt();let m=0;
+ function checkout(i){const p=PACKS[i],t=p.n+p.b,o=opt();let m=0,res='ok';
   let ov=$('tp-ov');if(!ov){ov=document.createElement('div');ov.id='tp-ov';ov.className='tp-ov';ov.setAttribute('role','dialog');ov.setAttribute('aria-modal','true');document.body.appendChild(ov)}
   const draw=()=>{ov.innerHTML='<div class="tp"><div class="tp-hd"><img src="assets/pay/tosspayments-short.png" alt="Toss Payments"><button class="tp-x" type="button" aria-label="Close">×</button></div><div class="tp-bd">'+
    '<div class="tp-ord"><div><small>RORR · ENERGY</small><b>⚡ '+t.toLocaleString('en-US')+(p.b?' ('+p.n+' + '+p.b+')':'')+'</b></div><div class="tp-amt">'+price(p)+'</div></div>'+
    '<div class="tp-ms">'+o.methods.map((x,k)=>'<button type="button" class="tp-m'+(k===m?' on':'')+'" data-tpm="'+k+'"><span class="rd"></span>'+tile(x)+'<span>'+LX(M[x][0],M[x][1])+'</span></button>').join('')+'</div>'+
-   '<button class="tp-pay" type="button">'+LX('Pay '+price(p),price(p)+' 결제')+'</button><p class="tp-fine">'+LX('Demo · no real charge','데모 · 실제 결제 없음')+'</p></div></div>'};
+   '<button class="tp-pay" type="button">'+LX('Pay '+price(p),price(p)+' 결제')+'</button><p class="tp-fine">'+LX('Demo · no real charge','데모 · 실제 결제 없음')+'</p>'+
+   '<div class="tp-demo"><span>'+LX('Demo result:','데모 결과:')+'</span>'+[['ok',LX('Success','성공')],['declined',LX('Card declined','카드 거절')],['limit',LX('Limit','한도 초과')],['confirm-fail',LX('Confirm error','확정 오류')]].map(d=>'<button type="button" data-tpr="'+d[0]+'" class="'+(d[0]===res?'on':'')+'">'+d[1]+'</button>').join('')+'</div></div></div>'};
   draw();ov.classList.add('on');document.getElementById('pop')?.classList.remove('open');
-  ov.onclick=e=>{e.stopPropagation();e.preventDefault();if(e.target===ov||e.target.closest('.tp-x')){ov.classList.remove('on');return}const mm=e.target.closest('.tp-m');if(mm){m=+mm.dataset.tpm;draw();return}
-   if(e.target.closest('.tp-pay')){ov.classList.remove('on');const mn=o.methods[m];buy(t,price(p)+' · '+LX(M[mn][0],M[mn][1]),price(p,'USD'))}}}
+  const pay=r=>{ov.classList.remove('on');const mn=o.methods[m];PAY.start({n:t,amount:o.cur==='USD'?p.usd:p.krw,priceLabel:price(p)+' · '+LX(M[mn][0],M[mn][1]),usd:price(p,'USD'),result:r})};
+  ov.onclick=e=>{e.stopPropagation();e.preventDefault();if(e.target===ov){ov.classList.remove('on');return}if(e.target.closest('.tp-x')){pay('cancel');return}const mm=e.target.closest('.tp-m');if(mm){m=+mm.dataset.tpm;draw();return}
+   const dr=e.target.closest('[data-tpr]');if(dr){res=dr.dataset.tpr;draw();return}
+   if(e.target.closest('.tp-pay')){pay(res)}}}
  document.addEventListener('click',e=>{const pv=e.target.closest('.prov[data-opt]');if(pv){st.opt=pv.dataset.opt;save();render();return}
   const pk=e.target.closest('#packrow .pk');if(pk){st.pack=+pk.dataset.pk;save();render();return}
   if(e.target.closest('#tu-go')){checkout(st.pack);return}
@@ -3432,6 +3463,48 @@ function openReceipt(e){e.preventDefault();toast(LX('Opens the Toss Payments rec
 /* start the promo marks/bubble timer when the card is first seen */
 (function(){var p=document.querySelector('.pan.promo');if(!p)return;if(!('IntersectionObserver' in window)){p.classList.add('go');return}
  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting&&e.intersectionRatio>=.5){p.classList.add('go');io.disconnect()}})},{threshold:[.5]});io.observe(p)})();
+</script>
+<script>
+/* Payment result pages. Production: Toss redirects to /payment/success/ or /payment/fail/ (stubs forward to #payment/...).
+   success -> POST /payments/confirm {paymentKey, orderId, amount}; demo simulates it. */
+const PAY=(()=>{const $=id=>document.getElementById(id);const KP='rorr-pay-pending',KD='rorr-pay-done';
+ const get=k=>{try{return JSON.parse(sessionStorage.getItem(k)||'null')}catch(e){return null}};
+ const done=()=>{try{return JSON.parse(localStorage.getItem(KD)||'[]')}catch(e){return[]}};
+ const markDone=id=>{const a=done();a.push(id);try{localStorage.setItem(KD,JSON.stringify(a.slice(-50)))}catch(e){}};
+ const q=r=>{const i=r.indexOf('?');return new URLSearchParams(i<0?'':r.slice(i+1))};
+ const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+ const sum=rows=>'<dl class="pay-sum">'+rows.filter(r=>r[1]).map(r=>'<div><dt>'+r[0]+'</dt><dd>'+esc(r[1])+'</dd></div>').join('')+'</dl>';
+ const go=(r,msg)=>{history.replaceState({r},'','#'+r);route_(r);if(msg)setTimeout(()=>toast(msg),60)};
+ // start: called by the demo checkout instead of buy()
+ function start(o){const id='ORD-'+Date.now().toString(36).toUpperCase();try{sessionStorage.setItem(KP,JSON.stringify(Object.assign({orderId:id},o)))}catch(e){}
+  const r=o.result==='cancel'?'payment/fail?code=PAY_PROCESS_CANCELED&message=User%20canceled&orderId='+id
+   :o.result==='declined'?'payment/fail?code=REJECT_CARD_COMPANY&message=Card%20declined&orderId='+id
+   :o.result==='limit'?'payment/fail?code=EXCEED_MAX_DAILY_PAYMENT_COUNT&message=Limit%20exceeded&orderId='+id
+   :'payment/success?paymentKey=demo_'+Math.random().toString(36).slice(2,10)+'&orderId='+id+'&amount='+o.amount+(o.result==='confirm-fail'?'&demo=confirm-fail':'');
+  setTimeout(()=>{history.pushState({r},'','#'+r);route_(r)},350)}
+ function success(p){const c=$('pay-card'),o=get(KP)||{},id=p.get('orderId')||'',amt=p.get('amount')||'';
+  c.innerHTML='<div class="pay-ic spin" role="img" aria-label="'+LX('Loading','불러오는 중')+'"></div><h1>'+LX('Confirming your payment','결제를 확인하고 있어요')+'</h1><p>'+LX('This takes a few seconds. Please keep this page open.','잠시만 기다려 주세요. 이 페이지를 닫지 마세요.')+'</p>'+sum([[LX('Order','주문 번호'),id],[LX('Amount','결제 금액'),o.priceLabel||amt]]);
+  if(done().includes(id)){setTimeout(()=>go('account/energy',LX('This payment was already processed. Your ENERGY is up to date.','이미 처리된 결제예요. ENERGY 잔액은 최신 상태예요.')),700);return}
+  setTimeout(()=>{ // demo stand-in for POST /payments/confirm
+   const bad=p.get('demo')==='confirm-fail'||!o.orderId||o.orderId!==id||String(o.amount)!==amt;
+   if(bad){c.innerHTML='<div class="pay-ic warn" aria-hidden="true">!</div><h1>'+LX("We couldn't confirm your payment",'결제를 확인하지 못했어요')+'</h1><p>'+LX("Your ENERGY hasn't been added. If you were charged, the payment is canceled automatically. Check your history, or contact us with the order number.",'ENERGY가 충전되지 않았어요. 결제가 된 경우 자동으로 취소돼요. 사용 내역을 확인하거나 주문 번호와 함께 문의해 주세요.')+'</p>'+
+     sum([[LX('Order','주문 번호'),id],[LX('Amount','결제 금액'),o.priceLabel||amt],[LX('Error code','오류 코드'),p.get('demo')==='confirm-fail'?'CONFIRM_FAILED':'AMOUNT_MISMATCH']])+
+     '<div class="pay-act"><a class="pill" href="#account/energy" onclick="nav(event,\'account/energy\')">'+LX('View usage history','사용 내역 보기')+'</a><span class="lnk">'+LX('Need help? ','도움이 필요하면 ')+'<a href="#contact" onclick="nav(event,\'contact\')">'+LX('Contact us','문의하기')+'</a></span></div>';return}
+   markDone(id);try{sessionStorage.removeItem(KP)}catch(e){}
+   buy(o.n,o.priceLabel,o.usd);go('account/energy',LX('ENERGY added · ⚡ '+o.n.toLocaleString('en-US'),'ENERGY 충전 완료 · ⚡ '+o.n.toLocaleString('en-US')))},1300)}
+ const REASON={PAY_PROCESS_CANCELED:['You canceled the payment','결제를 취소했어요','Nothing was charged. You can try again any time.','결제되지 않았어요. 언제든 다시 결제할 수 있어요.'],
+  REJECT_CARD_COMPANY:['Your card was declined','카드사에서 결제를 거절했어요','Check your card details or try another card or method.','카드 정보를 확인하거나 다른 카드·결제 수단으로 다시 시도해 주세요.'],
+  LIMIT:['You reached a payment limit','결제 한도를 넘었어요','Your card or payment method limit was exceeded. Try a smaller pack or another method.','카드나 결제 수단의 한도를 넘었어요. 더 작은 팩이나 다른 결제 수단으로 시도해 주세요.'],
+  OTHER:["The payment didn't go through",'결제가 완료되지 않았어요','Nothing was charged. Please try again in a moment.','결제되지 않았어요. 잠시 후 다시 시도해 주세요.']};
+ function fail(p){const code=p.get('code')||'UNKNOWN',id=p.get('orderId')||'',g=get(KP),o=g&&g.orderId===id?g:{};
+  const k=REASON[code]?code:/EXCEED|LIMIT/.test(code)?'LIMIT':'OTHER',R=REASON[k];
+  $('pay-card').innerHTML='<div class="pay-ic '+(code==='PAY_PROCESS_CANCELED'?'warn':'err')+'" aria-hidden="true">'+(code==='PAY_PROCESS_CANCELED'?'!':'×')+'</div><h1>'+LX(R[0],R[1])+'</h1><p>'+LX(R[2],R[3])+'</p>'+
+   sum([[LX('Order','주문 번호'),id],[LX('Amount','결제 금액'),o.priceLabel],[LX('Error code','오류 코드'),code]])+
+   '<div class="pay-act"><a class="pill" href="#account/energy" onclick="nav(event,\'account/energy\')">'+LX('Try again','다시 결제하기')+'</a><span class="lnk">'+LX('Still not working? ','계속 안 되나요? ')+'<a href="#contact" onclick="nav(event,\'contact\')">'+LX('Contact us','문의하기')+'</a></span></div>'}
+ function show(r){const p=q(r);(r.startsWith('payment/success')?success:fail)(p)}
+ return{start,show}})();
+/* deep link (Toss redirect) may arrive before this script loads */
+if(location.hash.indexOf("#payment/")===0)setTimeout(()=>route_(location.hash.slice(1)),0);
 </script>
 </body>
 </html>
