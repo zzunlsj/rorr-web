@@ -216,7 +216,7 @@ header{background:var(--bg)!important;border-bottom:1px solid var(--line)}
 .blogs #bl a{display:block;padding:11px 16px;border-bottom:1px solid var(--line);text-decoration:none;font-size:14px}
 .blogs #bl a:last-child{border-bottom:0}.blogs #bl a span{display:block;font:500 11px "Pretendard Variable",monospace;color:var(--mute);margin-bottom:2px}
 body:not(.chatting) .dock{display:none!important}
-body.pagev .portal,body.chatting .portal,body.chatting .adtop,body.acct .portal{display:none}
+body.pagev .portal,body.chatting .portal,body.acct .portal{display:none}
 @media (max-width:1100px){.portal{grid-template-columns:1fr 1fr}.pside{grid-column:1/-1;grid-template-columns:repeat(3,1fr)}}
 @media (max-width:760px){.portal{grid-template-columns:1fr}.pside{grid-template-columns:1fr;order:-1}.pside .blogs{display:none}.adt{font-size:13px}.adin{flex-wrap:wrap}.tb .nm span{display:none}}
 
@@ -394,7 +394,7 @@ footer .links a{text-decoration:none}footer p{margin-top:6px;max-width:820px}
 .quota{display:none;text-align:center;font-size:12.5px;color:var(--mute);margin-top:8px}.quota a{color:var(--ink)}
 /* chat mode */
 .chat{display:none;min-height:calc(100vh - 68px);padding:32px 0 230px}
-body.chatting main,body.chatting footer,body.chatting .notice,body.chatting .stage .hero,body.chatting .stage .scene,body.chatting .stage .ctrl{display:none}
+body.chatting main,body.chatting footer,body.chatting .stage .hero,body.chatting .stage .scene,body.chatting .stage .ctrl{display:none}
 body.chatting .stage{margin:0;border:0;border-radius:0;background:none;overflow:visible}
 body.chatting .stage::before{display:none}
 body.chatting .chat{display:block}
@@ -1692,9 +1692,16 @@ body.pagev header,body.acct header{top:var(--hdr-top,0px)!important}
 /* Home: header also fixed under the notice + ad bars, sticks to the top once they scroll away */
 body:not(.pagev):not(.acct):not(.chatting):not(.teamv) header{position:fixed!important;left:0;right:0;top:var(--hdr-top,0px)!important;transform:none!important}
 body:not(.pagev):not(.acct):not(.chatting):not(.teamv) .ticker{margin-top:69px}
-/* Home side ads: home content is wider (1320px), so the rails only show when they fit beside it */
-@media (min-width:1720px) and (min-height:691px){body:not(.pagev):not(.acct):not(.chatting):not(.teamv) .siderail{display:block;position:fixed;top:calc(var(--hdr-top,0px) + 150px);z-index:20}body:not(.pagev):not(.acct):not(.chatting):not(.teamv) .siderail.l{left:calc(50% - 856px)}body:not(.pagev):not(.acct):not(.chatting):not(.teamv) .siderail.r{right:calc(50% - 856px)}}
-body.pagev .siderail,body.acct .siderail{top:calc(var(--hdr-top,0px) + 150px)!important}
+/* Home side ads (1720px+, they fit beside the 1320px home content): they start below the hero carousel, level with the first panels, then stick under the header */
+@media (min-width:1720px) and (min-height:691px){body:not(.pagev):not(.acct):not(.chatting):not(.teamv) .siderail{display:block;position:fixed;top:var(--home-rail-top,600px);z-index:20}body:not(.pagev):not(.acct):not(.chatting):not(.teamv) .siderail.l{left:calc(50% - 856px)}body:not(.pagev):not(.acct):not(.chatting):not(.teamv) .siderail.r{right:calc(50% - 856px)}}
+body.pagev .siderail,body.acct .siderail,body.chatting .siderail{top:calc(var(--hdr-top,0px) + 150px)!important}
+/* Ask RORR chat: notice + ad bar on top, header/chat bar follow them, side ads like sub pages */
+body.chatting .adtop{display:block}
+body.chatting header{top:var(--hdr-top,0px)!important}
+body.chatting .chatbar{top:calc(var(--hdr-top,0px) + 69px)!important}
+body.chatting .chat{padding-top:calc(150px + var(--bars-h,0px))!important}
+@media (min-width:1220px) and (min-height:691px){body.chatting .siderail{display:block;position:fixed;z-index:20}body.chatting .siderail.l{left:24px}body.chatting .siderail.r{right:24px}}
+@media (min-width:1520px) and (min-height:691px){body.chatting .siderail.l{left:calc(50% - 760px)}body.chatting .siderail.r{right:calc(50% - 760px)}}
 </style>
 </head>
 <body>
@@ -3522,8 +3529,8 @@ if(location.hash.indexOf("#payment/")===0)setTimeout(()=>route_(location.hash.sl
 <script>
 /* fixed header on sub/account pages sits below the notice + ad bars until they scroll away */
 (function(){var n=document.querySelector('.notice'),a=document.querySelector('.adtop'),r=document.documentElement,q=0;
- function upd(){q=0;var b=document.body;if(b.classList.contains('chatting')){r.style.removeProperty('--hdr-top');return}
-  var h=(n?n.offsetHeight:0)+(a?a.offsetHeight:0);r.style.setProperty('--hdr-top',Math.max(0,h-scrollY)+'px')}
+ function upd(){q=0;var b=document.body;
+  var h=(n?n.offsetHeight:0)+(a?a.offsetHeight:0);r.style.setProperty('--bars-h',h+'px');r.style.setProperty('--hdr-top',Math.max(0,h-scrollY)+'px');var pt=document.querySelector('.portal');if(pt&&!b.classList.contains('pagev')&&!b.classList.contains('acct')&&!b.classList.contains('chatting')){var hb=Math.max(0,h-scrollY)+69+16;r.style.setProperty('--home-rail-top',Math.max(hb,pt.getBoundingClientRect().top)+'px')}}
  function sch(){if(!q)q=setTimeout(upd,0)}
  addEventListener('scroll',sch,{passive:true});addEventListener('resize',sch);new MutationObserver(sch).observe(document.body,{attributes:true,attributeFilter:['class']});upd()})();
 </script>
