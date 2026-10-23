@@ -627,7 +627,7 @@ body.pagev .lgbar,body.acct .lgbar{display:none}
 .ra-b h3{font:700 20px/1.05 "Pretendard Variable",sans-serif;text-transform:uppercase;margin-bottom:8px}
 .ra-b p{font-size:13px;color:var(--mute);line-height:1.45;margin-bottom:14px}
 .ra-b .pill{display:block;text-align:center;font-size:11.5px;padding:9px 6px}
-@media (min-width:1520px){body.pagev .siderail{display:block;position:fixed;top:120px;z-index:20}.siderail.l{left:calc(50% - 760px)}.siderail.r{right:calc(50% - 760px)}}
+@media (min-width:1520px){body.pagev .siderail,body.acct .siderail{display:block;position:fixed;top:120px;z-index:20}.siderail.l{left:calc(50% - 760px)}.siderail.r{right:calc(50% - 760px)}}
 
 @media (max-height:620px){.siderail{display:none!important}}
 @media (min-width:1520px){body.pagev .rhero{margin-left:calc(50% - 570px)!important;margin-right:calc(50% - 570px)!important}}
@@ -644,11 +644,13 @@ body.pagev .lgbar,body.acct .lgbar{display:none}
 .wpop p{font:400 13.5px/1.5 "Pretendard Variable",sans-serif;color:var(--ink);margin:4px 0 8px}
 .wpop a{font:600 13px "Pretendard Variable",sans-serif;color:var(--cyan);text-decoration:none}.wpop a:hover{text-decoration:underline}
 
-/* side rails on all sub pages (LwRC+, about, blog, post): same placement everywhere */
+/* side rails on all sub pages (LwRC+, about, blog, post, account, payment): same placement everywhere; never on Home */
 @media (min-width:1220px) and (max-width:1519px){
- body.pagev .siderail{display:block;position:fixed;top:120px;z-index:20}
- body.pagev .siderail.l{left:24px}
- body.pagev .siderail.r{right:24px}
+ body.pagev .siderail,body.acct .siderail{display:block;position:fixed;top:120px;z-index:20}
+ body.pagev .siderail.l,body.acct .siderail.l{left:24px}
+ body.pagev .siderail.r,body.acct .siderail.r{right:24px}
+ body.acct .account>.wrap{max-width:calc(100vw - 432px)}
+ body.acct .pk{padding:16px 14px}body.acct .pk .n{flex-wrap:nowrap;font-size:22px;gap:6px}body.acct .pk .bn{font-size:11px;padding:1px 6px;white-space:nowrap}
  body.pagev .rhero{margin-left:208px!important;margin-right:208px!important}
  body.pagev:has(#pg-wge.on) .wg,body.pagev:has(#pg-about.on) .ab{max-width:calc(100vw - 432px);padding-left:0;padding-right:0}
  body.pagev:has(#pg-about.on) .ab-g4{grid-template-columns:1fr 1fr}
@@ -956,7 +958,7 @@ body.chatting .ticker{display:none}
 body.pagev .ticker,body.acct .ticker{margin-top:69px}
 body.pagev .rhero{margin-top:16px!important}
 .mt{margin-top:22px}
-body.pagev .siderail{top:150px!important}
+body.pagev .siderail,body.acct .siderail{top:150px!important}
 
 /* let header dropdowns escape the stage box */
 .stage{overflow:visible!important}
