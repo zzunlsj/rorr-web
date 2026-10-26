@@ -1794,7 +1794,7 @@ body.chatting .chat{padding-top:calc(150px + var(--bars-h,0px))!important}
  </section>
  <section class="pan" id="p-team">
   <div class="ph"><h2>Team <span class="m">LwRC+</span> <button class="wtip" type="button" data-tip="team" aria-label="What is team LwRC+?">?</button></h2><span class="tagx" id="tag-team"></span></div>
-  <table class="tb"><thead><tr><th>#</th><th>Team</th><th class="r">W</th><th class="r">L</th><th class="r">Game ±</th><th class="r">Win%</th><th class="r"><span class="m">LwRC+</span></th></tr></thead><tbody id="tb-team"></tbody></table>
+  <table class="tb"><thead><tr><th>#</th><th>Team</th><th class="r">Games</th><th class="r">Game ±</th><th class="r">Win%</th><th class="r"><span class="m">LwRC+</span></th></tr></thead><tbody id="tb-team"></tbody></table>
   <div class="pf"><span></span><span></span></div>
  </section>
  <aside class="pside">
@@ -2443,7 +2443,7 @@ function renderPortal(){const tb=document.getElementById('tb-rank');if(!tb)retur
  tb.innerHTML=P.map((r,i)=>`<tr class="${i<3?'top3':''}" data-p="${r.name}"><td class="rk">${i+1}</td><td class="nm"><b>${r.name}</b>${(window.PREFS&&PREFS.pl||[]).includes(r.name)?'<em class="fvs">★</em>':''}<span>${r.team} ${r.role}</span>${lgTag(r.lg,all)}</td><td class="r">${r.g}</td><td class="r"><span class="bar" style="width:${Math.round((r.ix-100)/(mx-100||1)*40+8)}px"></span><span class="${i===0?'hi':''}">${r.ix}</span></td><td class="r">${Math.round(r.pg/TEAM[r.team].pg*100)}%</td></tr>`).join('');
  const T=DB.teams.filter(t=>inLg(t)).sort((a,b)=>b.ix-a.ix).slice(0,10);
  const tt=document.getElementById('tb-team');
- tt.innerHTML=T.map((t,i)=>`<tr class="${i<3?'top3':''}" data-t="${t.team}"><td class="rk">${i+1}</td><td class="nm"><b>${t.team}</b>${(window.PREFS&&PREFS.tm||[]).includes(t.team)?'<em class="fvs">★</em>':''}${lgTag(t.lg,all)}</td><td class="r">${t.W}</td><td class="r">${t.L}</td><td class="r ${t.sd>0?'vp':'vn'}">${t.sd>0?'+':''}${t.sd}</td><td class="r">${t.wr.toFixed(3).replace(/^0/,'')}</td><td class="r ${t.ix>=100?'vp':'vn'}">${t.ix}</td></tr>`).join('');
+ tt.innerHTML=T.map((t,i)=>`<tr class="${i<3?'top3':''}" data-t="${t.team}"><td class="rk">${i+1}</td><td class="nm"><b>${t.team}</b>${(window.PREFS&&PREFS.tm||[]).includes(t.team)?'<em class="fvs">★</em>':''}${lgTag(t.lg,all)}</td><td class="r">${t.sw}–${t.sl}</td><td class="r ${t.sd>0?'vp':'vn'}">${t.sd>0?'+':''}${t.sd}</td><td class="r">${t.wr.toFixed(3).replace(/^0/,'')}</td><td class="r ${t.ix>=100?'vp':'vn'}">${t.ix}</td></tr>`).join('');
  setTag('tag-rank','top 10');setTag('tag-team','top 10');
  document.getElementById('qchips').innerHTML=SETS.fan.map(e=>`<button type="button">${e.q}</button>`).join('');
  document.querySelectorAll('#qchips button').forEach(b=>b.onclick=()=>enterChat(b.textContent));
@@ -2464,8 +2464,8 @@ function renderSched(k){schedTab=k||schedTab;document.querySelectorAll('.stabs b
  document.getElementById('note-sched').textContent=`Times in your local time (${tzLabel()}).`}
 function renderLower(){const t=document.getElementById('st-t');if(!t)return;
  if(LG==='ALL'){
-  t.innerHTML=`<thead><tr><th>League</th><th>Leader</th><th class="r">W–L</th><th>2nd</th><th>3rd</th><th class="r">Teams</th></tr></thead><tbody>`+LG_ORDER.map(l=>{const s=standings(l);
-   return `<tr data-l="${l}"><td class="nm"><b>${l}</b><span>${LGS[l].r}</span></td><td class="nm"><button class="ent" data-t="${s[0].team}"><b>${s[0].team}</b></button></td><td class="r">${s[0].W}–${s[0].L}</td><td><button class="ent" data-t="${s[1].team}">${s[1].team}</button></td><td><button class="ent" data-t="${s[2].team}">${s[2].team}</button></td><td class="r">${s.length}</td></tr>`}).join('')+'</tbody>';
+  t.innerHTML=`<thead><tr><th>League</th><th>Leader</th><th class="r">W</th><th class="r">L</th><th>2nd</th><th>3rd</th><th class="r">Teams</th></tr></thead><tbody>`+LG_ORDER.map(l=>{const s=standings(l);
+   return `<tr data-l="${l}"><td class="nm"><b>${l}</b><span>${LGS[l].r}</span></td><td class="nm"><button class="ent" data-t="${s[0].team}"><b>${s[0].team}</b></button></td><td class="r">${s[0].W}</td><td class="r">${s[0].L}</td><td><button class="ent" data-t="${s[1].team}">${s[1].team}</button></td><td><button class="ent" data-t="${s[2].team}">${s[2].team}</button></td><td class="r">${s.length}</td></tr>`}).join('')+'</tbody>';
   t.querySelectorAll('tbody tr').forEach(r=>r.onclick=()=>{setLeague(r.dataset.l);document.getElementById('p-stand').scrollIntoView({behavior:'smooth',block:'start'})});
   document.getElementById('h-stand').textContent='League leaders';
   document.getElementById('note-stand').textContent='Pick a league for its full match records.'}
@@ -3261,7 +3261,7 @@ function wgPlayers(){const sp=SPLIT[$v('wf-split')],lg=$v('wf-lg');
  return DB.players.filter(p=>inLg(p,lg)).map((p,i)=>{const g=Math.max(1,Math.round(p.g*sp[0]));const pg=$v('wf-split')==='all'?p.pg:Math.round(p.pg*(sp[1]+((i*37)%11-5)/100));return{...p,g,pg,ix:Math.round(100+pg*WGE_K),tot:pg*g}})}
 function wgRows(){const P=wgPlayers(),lg=$v('wf-lg'),role=$v('wf-role'),team=$v('wf-team'),mn=+$v('wf-min');
  if(wv.v==='team')return DB.teams.filter(t=>inLg(t,lg)).map(t=>{const ps=P.filter(p=>p.team===t.team);const g=Math.max(...ps.map(p=>p.g));const tot=ps.reduce((a,p)=>a+p.tot,0);
-  return{lg:t.lg,name:t.team,g,pg:Math.round(tot/g),ix:Math.round(ps.reduce((a,p)=>a+p.ix,0)/ps.length),tot,best:ps.slice().sort((a,b)=>b.pg-a.pg)[0].role,rec:t.W+'–'+t.L}});
+  return{lg:t.lg,name:t.team,g,pg:Math.round(tot/g),ix:Math.round(ps.reduce((a,p)=>a+p.ix,0)/ps.length),tot,best:ps.slice().sort((a,b)=>b.pg-a.pg)[0].role,rec:t.W+'–'+t.L,W:t.W,L:t.L}});
  let L=P.map(p=>({...p}));
  if(wv.v==='player'){if(role)L=L.filter(p=>p.role===role);if(team)L=L.filter(p=>p.team===team);return L.filter(p=>p.g>=mn)}
  const tm=team||standings(lg)[0].team;L=L.filter(p=>p.team===tm);const sum=L.reduce((a,p)=>a+Math.max(0,p.pg),0);
@@ -3280,8 +3280,8 @@ function wgRender(){const box=document.querySelector('.wg');if(!box)return;box.d
  const vh=wv.u==='ix'?'<span class="m">LwRC+</span> '+(wv.v==='team'?'<button class="wtip" type="button" data-tip="team" aria-label="What is team LwRC+?">?</button>':'<button class="wtip" type="button" aria-label="What is LwRC+?">?</button>'):'Gold +/G';
  const th=(k,l,c='r')=>`<th class="${c} sort ${wv.sort===k?'act':''}" data-k="${k}">${l}${wv.sort===k?(wv.dir<0?' ↓':' ↑'):''}</th>`;
  let head,body;
- if(wv.v==='team'){head=`<tr><th>#</th>${th('name','Team','')}<th class="r">W–L</th>${th('g','G')}${th('v',vh)}<th>Top role</th></tr>`;
-  body=R.map((r,i)=>`<tr class="${i<3?'top3':''}" data-t="${r.name}"><td class="rk">${i+1}</td><td class="nm"><b>${r.name}</b>${lgTag(r.lg,all)}</td><td class="r">${r.rec}</td><td class="r">${r.g}</td><td class="r">${bar(r)}</td><td><span class="rl">${r.best}</span></td></tr>`).join('')}
+ if(wv.v==='team'){head=`<tr><th>#</th>${th('name','Team','')}<th class="r">W</th><th class="r">L</th>${th('g','G')}${th('v',vh)}<th>Top role</th></tr>`;
+  body=R.map((r,i)=>`<tr class="${i<3?'top3':''}" data-t="${r.name}"><td class="rk">${i+1}</td><td class="nm"><b>${r.name}</b>${lgTag(r.lg,all)}</td><td class="r">${r.W}</td><td class="r">${r.L}</td><td class="r">${r.g}</td><td class="r">${bar(r)}</td><td><span class="rl">${r.best}</span></td></tr>`).join('')}
  else if(wv.v==='player'){head=`<tr><th>#</th>${th('name','Player','')}<th>Role</th>${th('g','G')}${th('v',vh)}</tr>`;
   body=R.map((r,i)=>`<tr class="${i<3?'top3':''}" data-p="${r.name}"><td class="rk">${i+1}</td><td class="nm"><b>${r.name}</b><span>${r.team}</span>${lgTag(r.lg,all)}</td><td><span class="rl">${r.role}</span></td><td class="r">${r.g}</td><td class="r">${bar(r)}</td></tr>`).join('')}
  else{const ref=wgPlayers().filter(p=>p.lg===(R[0]&&R[0].lg)).sort((a,b)=>b[key0]-a[key0]);
